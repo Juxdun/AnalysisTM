@@ -3,7 +3,7 @@ package com.juxdun.analysisTM.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller("/manage")
+@Controller
 public class ManageController {
 
 	@RequestMapping("/update")
