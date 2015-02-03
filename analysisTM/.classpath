@@ -13,8 +13,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/xstream"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IK-Analyzer-2012FF"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/springmvc"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
