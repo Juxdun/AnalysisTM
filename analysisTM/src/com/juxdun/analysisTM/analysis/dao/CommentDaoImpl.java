@@ -1,9 +1,11 @@
 package com.juxdun.analysisTM.analysis.dao;
 
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,15 +31,41 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
-	public void saveComments(List<Object[]> batchArgs) {
-		String sql = "INSERT tm_comments(cluid, content, date, person) value(?,?,?,?)";
-		jdbcTemplate.batchUpdate(sql, batchArgs);
+	public void batchInsertComments(final List<Comment> comments) {
+		String sql = "INSERT tm_comments(clueid, content, date, person) values(?,?,?,?)";
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int index) throws SQLException {
+				Comment c = comments.get(index);
+				ps.setString(1, c.getClueid());
+				ps.setString(2, c.getContent());
+				ps.setString(3, c.getDate());
+				ps.setString(4, c.getPerson());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return comments.size();
+			}
+		});
 	}
+	/*@Override
+	public void batchInsertComments(List<Object[]> batchArgs) {
+		String sql = "INSERT tm_comments(clueid, content, date, person) values(?,?,?,?)";
+		jdbcTemplate.batchUpdate(sql, batchArgs);
+	}*/
 
 	@Override
 	public void deleteWaterArmy() {
-		// TODO Auto-generated method stub
-		
+		String sql = "DELETE FROM `tm_comments` WHERE ";
+		jdbcTemplate.update(sql);
+	}
+	
+	@Override
+	public void deleteLess10Char(){
+		String sql = "DELETE FROM `tm_comments` WHERE char_length(content) <= 10 ";
+		jdbcTemplate.update(sql);
 	}
 
 }

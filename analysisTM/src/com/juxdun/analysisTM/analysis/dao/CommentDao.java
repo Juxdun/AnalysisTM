@@ -12,11 +12,17 @@ public interface CommentDao {
 	 * 保存评论
 	 * @param comments
 	 */
-	void saveComments(List<Object[]> batchArgs);
+	void batchInsertComments(List<Comment> comments);
+//	void batchInsertComments(List<Object[]> batchArgs);
 	
 	/**
-	 * 移除水军
+	 * 移除水军评论
 	 */
 	void deleteWaterArmy();
+	
+	/**
+	 * 移除<10 个字符评论
+	 */
+	void deleteLess10Char();
 
 }

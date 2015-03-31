@@ -20,17 +20,17 @@ public class XSteamUtil {
 	 * 从xml文件取评论列表
 	 * @return 评论列表
 	 */
-	public List<Object[]> getBetchArgsFromXml(){
-		List<Object[]> betchArgs = new ArrayList<Object[]>();
-		aliasXSteam(xstream, XSteamAliasMethod.AsComment);
-		listComments(pathComment, betchArgs);
-		return betchArgs;
-	}
-	/*public List<Comment> getCommentsFromXml(){
+	public List<Comment> getCommentsFromXml(){
 		List<Comment> comments = new ArrayList<Comment>();
 		aliasXSteam(xstream, XSteamAliasMethod.AsComment);
 		listComments(pathComment, comments);
 		return comments;
+	}
+/*	public List<Object[]> getBetchArgsFromXml(){
+		List<Object[]> betchArgs = new ArrayList<Object[]>();
+		aliasXSteam(xstream, XSteamAliasMethod.AsComment);
+		listComments(pathComment, betchArgs);
+		return betchArgs;
 	}*/
 	
 	/**
@@ -93,7 +93,26 @@ public class XSteamUtil {
 	 * @param file 评论的xml目录
 	 * @param list 容器
 	 */
-	private void listComments(File file, List<Object[]> betchArgs) {
+	private void listComments(File file, List<Comment> list) {
+		if (file.isDirectory()) {
+			// 如果是目录，递归遍历目录
+			File[] tempFiles = file.listFiles();
+			
+			for (int i = 0; i < tempFiles.length; i++) {
+				listComments(tempFiles[i], list);
+			}
+		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
+			// 如果是文件，xml转换Object
+			Extraction ex = (Extraction) xstream.fromXML(file);
+			List<Comment> tempList = ex.getList();
+			// 设置clueid
+			for (Comment comment : tempList) {
+				comment.setClueid(ex.getClueid());
+			}
+			list.addAll(tempList);
+		}
+	}
+/*	private void listComments(File file, List<Object[]> betchArgs) {
 		if (file.isDirectory()) {
 			// 如果是目录，递归遍历目录
 			File[] tempFiles = file.listFiles();
@@ -110,25 +129,6 @@ public class XSteamUtil {
 				betchArgs.add(new Object[]{ex.getClueid(), c.getContent(), c.getDate(), c.getPerson()});
 			}
 			
-		}
-	}
-	/*private void listComments(File file, List<Comment> list) {
-		if (file.isDirectory()) {
-			// 如果是目录，递归遍历目录
-			File[] tempFiles = file.listFiles();
-
-			for (int i = 0; i < tempFiles.length; i++) {
-				listComments(tempFiles[i], list);
-			}
-		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
-			// 如果是文件，xml转换Object
-			Extraction ex = (Extraction) xstream.fromXML(file);
-			List<Comment> tempList = ex.getList();
-			// 设置clueid
-			for (Comment comment : tempList) {
-				comment.setClueid(ex.getClueid());
-			}
-			list.addAll(tempList);
 		}
 	}*/
 	

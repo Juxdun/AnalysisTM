@@ -1,12 +1,12 @@
 package com.juxdun.analysisTM.analysis.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juxdun.analysisTM.analysis.AnalysisService;
 import com.juxdun.analysisTM.analysis.Brand;
-import com.juxdun.analysisTM.analysis.Comment;
 import com.juxdun.analysisTM.analysis.Detail;
 import com.juxdun.analysisTM.analysis.Product;
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
@@ -50,7 +50,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 	 */
 	@Override
 	public void analyse() {
-		commentDao.saveComments(xSteamUtil.getBetchArgsFromXml());
+//		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
 		commentDao.deleteWaterArmy();
 		
 //		// 用线程
