@@ -58,7 +58,7 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public void deleteWaterArmy() {
-		String sql = "DELETE FROM `tm_comments` WHERE ";
+		String sql = "DELETE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
 		jdbcTemplate.update(sql);
 	}
 	
