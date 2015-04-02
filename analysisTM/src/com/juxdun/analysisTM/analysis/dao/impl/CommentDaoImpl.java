@@ -1,4 +1,4 @@
-package com.juxdun.analysisTM.analysis.dao;
+package com.juxdun.analysisTM.analysis.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,7 +10,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.juxdun.analysisTM.analysis.Comment;
+import com.juxdun.analysisTM.analysis.dao.CommentDao;
+import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Comment;
+import com.juxdun.analysisTM.analysis.entities.Detail;
+import com.juxdun.analysisTM.analysis.entities.Product;
 
 public class CommentDaoImpl implements CommentDao {
 

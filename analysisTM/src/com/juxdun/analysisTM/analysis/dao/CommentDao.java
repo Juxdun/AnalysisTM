@@ -2,7 +2,7 @@ package com.juxdun.analysisTM.analysis.dao;
 
 import java.util.List;
 
-import com.juxdun.analysisTM.analysis.Comment;
+import com.juxdun.analysisTM.analysis.entities.Comment;
 
 public interface CommentDao {
 	

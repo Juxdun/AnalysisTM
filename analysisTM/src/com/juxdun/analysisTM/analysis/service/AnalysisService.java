@@ -1,6 +1,10 @@
-package com.juxdun.analysisTM.analysis;
+package com.juxdun.analysisTM.analysis.service;
 
 import java.util.List;
+
+import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Detail;
+import com.juxdun.analysisTM.analysis.entities.Product;
 
 public interface AnalysisService {
 	

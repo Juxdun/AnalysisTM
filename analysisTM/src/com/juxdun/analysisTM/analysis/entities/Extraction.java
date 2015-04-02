@@ -1,4 +1,4 @@
-package com.juxdun.analysisTM.analysis;
+package com.juxdun.analysisTM.analysis.entities;
 
 import java.io.IOException;
 import java.io.StringReader;

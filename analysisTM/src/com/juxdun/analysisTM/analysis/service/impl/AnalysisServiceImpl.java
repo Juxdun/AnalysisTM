@@ -1,15 +1,15 @@
-package com.juxdun.analysisTM.analysis.impl;
+package com.juxdun.analysisTM.analysis.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.juxdun.analysisTM.analysis.AnalysisService;
-import com.juxdun.analysisTM.analysis.Brand;
-import com.juxdun.analysisTM.analysis.Detail;
-import com.juxdun.analysisTM.analysis.Product;
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
+import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Detail;
+import com.juxdun.analysisTM.analysis.entities.Product;
+import com.juxdun.analysisTM.analysis.service.AnalysisService;
 import com.juxdun.analysisTM.analysis.util.XSteamUtil;
 
 @Service

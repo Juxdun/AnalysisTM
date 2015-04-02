@@ -1,4 +1,4 @@
-package com.juxdun.analysisTM.analysis;
+package com.juxdun.analysisTM.analysis.entities;
 
 /**
  * 商品评论
