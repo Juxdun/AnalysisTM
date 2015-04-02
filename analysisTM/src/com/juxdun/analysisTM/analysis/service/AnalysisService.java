@@ -30,7 +30,7 @@ public interface AnalysisService {
 	 * @param cludid 品牌索引
 	 * @return 商品列表
 	 */
-	List<Product> listProductByBrand(String cludid);
+	List<Product> listProductByBrand(Brand brand);
 	
 	/**
 	 * 拿到某以商品详情

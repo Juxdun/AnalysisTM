@@ -89,6 +89,7 @@ public class XSteamUtil {
 			// 设置ClueId
 			for (Product p : tempList) {
 				p.setClueid(ex.getClueid());
+				p.setFullpath(ex.getFullpath());
 			}
 			list.addAll(tempList);
 		}
@@ -131,6 +132,7 @@ public class XSteamUtil {
 			// 设置ClueId
 			for (Comment comment : tempList) {
 				comment.setClueid(ex.getClueid());
+				comment.setBaseURI(ex.getBaseURI().getBucketBaseURI().getUri());
 			}
 			list.addAll(tempList);
 		}
@@ -188,9 +190,20 @@ public class XSteamUtil {
 	}
 	
 	/**
+	 * 从xml文件取评论列表
+	 * @return 评论列表
+	 */
+	public List<Extraction> getCommentExtractions(){
+		List<Extraction> list = new ArrayList<Extraction>();
+		aliasXSteam(xstream, XSteamAliasMethod.AsComment);
+		listExtraction(pathComment, list);
+		return list;
+	}
+	
+	/**
 	 * 递归遍历目录取评论
 	 * @param file 目录
-	 * @param list
+	 * @param list 容器
 	 */
 	private void listExtraction(File file, List<Extraction> list) {
 		if (file.isDirectory()) {

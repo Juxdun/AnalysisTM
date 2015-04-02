@@ -6,8 +6,6 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Brand {
-	
-	private String clueid;
 
 	/**
 	 * 名
@@ -24,10 +22,6 @@ public class Brand {
 	 */
 	private String img;
 
-	public String getClueid() {
-		return clueid;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -38,6 +32,11 @@ public class Brand {
 
 	public String getImg() {
 		return img;
+	}
+
+	@Override
+	public String toString() {
+		return "Brand [name=" + name + ", page=" + page + ", img=" + img + "]";
 	}
 	
 	

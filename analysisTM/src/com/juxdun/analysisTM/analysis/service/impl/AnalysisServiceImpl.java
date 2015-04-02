@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
+import com.juxdun.analysisTM.analysis.dao.ProductDao;
 import com.juxdun.analysisTM.analysis.entities.Brand;
 import com.juxdun.analysisTM.analysis.entities.Detail;
 import com.juxdun.analysisTM.analysis.entities.Product;
@@ -17,6 +18,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 	
 	@Autowired
 	private CommentDao commentDao;
+	
+	@Autowired
+	private ProductDao productDao;
 	
 	@Autowired
 	private XSteamUtil xSteamUtil;
@@ -51,7 +55,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	@Override
 	public void analyse() {
 //		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
-		commentDao.deleteWaterArmy();
+//		commentDao.deleteWaterArmy();
+//		productDao.batchInsertProducts(xSteamUtil.getProducts());
 		
 //		// 用线程
 //		// 1.拿到所有Extraction对象。
@@ -137,8 +142,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public List<Brand> listBrands() {
-		// TODO Auto-generated method stub
-		return null;
+		return xSteamUtil.getBrands();
 	}
 
 	@Override
@@ -148,9 +152,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public List<Product> listProductByBrand(String cludid) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> listProductByBrand(Brand brand) {
+		return productDao.getProductsByBrand(brand);
 	}
 
 	@Override

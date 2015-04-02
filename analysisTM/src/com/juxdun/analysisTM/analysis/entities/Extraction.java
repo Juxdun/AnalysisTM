@@ -33,7 +33,7 @@ public class Extraction {
 	/**
 	 * 
 	 */
-	private String baseURI;
+	private BaseURI baseURI;
 
 	/**
 	 * 列表
@@ -44,8 +44,29 @@ public class Extraction {
 		return clueid;
 	}
 
+	public String getFullpath() {
+		return fullpath;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public String getMiddle() {
+		return middle;
+	}
+
+	public BaseURI getBaseURI() {
+		return baseURI;
+	}
+
 	public List getList() {
 		return list;
+	}
+
+	@Override
+	public String toString() {
+		return "Extraction [baseURI=" + baseURI + "]";
 	}
 
 	/**

@@ -6,8 +6,9 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Product {
-	
+//	private int id;
 	private String clueid;
+	private String fullpath;
 
 	/**
 	 * 商品名
@@ -47,6 +48,14 @@ public class Product {
 		this.clueid = clueid;
 	}
 
+	public String getFullpath() {
+		return fullpath;
+	}
+
+	public void setFullpath(String fullpath) {
+		this.fullpath = fullpath;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -70,5 +79,35 @@ public class Product {
 	public String getShopUrl() {
 		return shopUrl;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+	public void setShopUrl(String shopUrl) {
+		this.shopUrl = shopUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [name=" + name + ", price=" + price + "]";
+	}
+	
 	
 }

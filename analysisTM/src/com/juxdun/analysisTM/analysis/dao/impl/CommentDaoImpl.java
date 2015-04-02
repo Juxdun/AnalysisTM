@@ -36,16 +36,17 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public void batchInsertComments(final List<Comment> comments) {
-		String sql = "INSERT tm_comments(clueid, content, date, person) values(?,?,?,?)";
+		String sql = "INSERT tm_comments(clueid, base_uri, content, date, person) values(?,?,?,?,?)";
 		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
 				Comment c = comments.get(index);
 				ps.setString(1, c.getClueid());
-				ps.setString(2, c.getContent());
-				ps.setString(3, c.getDate());
-				ps.setString(4, c.getPerson());
+				ps.setString(2, c.getBaseURI());
+				ps.setString(3, c.getContent());
+				ps.setString(4, c.getDate());
+				ps.setString(5, c.getPerson());
 			}
 			
 			@Override

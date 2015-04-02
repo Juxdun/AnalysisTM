@@ -10,6 +10,8 @@ public class Comment {
 	private int id;
 	
 	private String clueid;
+	
+	private String baseURI;
 
 	/**
 	 * 内容
@@ -69,6 +71,16 @@ public class Comment {
 	public void setClueid(String clueid) {
 		this.clueid = clueid;
 	}
+	
+	public String getBaseURI() {
+		return baseURI;
+	}
+
+
+	public void setBaseURI(String baseURI) {
+		this.baseURI = baseURI;
+	}
+
 
 	@Override
 	public String toString() {
