@@ -33,7 +33,8 @@ public class ProductDaoImpl implements ProductDao{
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
 				Product c = products.get(index);
-				ps.setString(1, c.getClueid());
+//				ps.setString(1, c.getClueid());
+				ps.setInt(1, c.getClueid());
 				ps.setString(2, c.getFullpath());
 				ps.setString(3, c.getName());
 				ps.setString(4, c.getPrice());

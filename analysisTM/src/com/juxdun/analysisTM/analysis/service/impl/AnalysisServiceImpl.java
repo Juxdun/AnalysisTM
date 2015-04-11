@@ -55,10 +55,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 	 */
 	@Override
 	public void analyse() {
+		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
+		productDao.batchInsertProducts(xSteamUtil.getProducts());
+		
+		commentDao.signWaterArmy();
 		productDao.updateProductTable();
-//		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
-//		commentDao.deleteWaterArmy();
-//		productDao.batchInsertProducts(xSteamUtil.getProducts());
 		
 //		// 用线程
 //		// 1.拿到所有Extraction对象。

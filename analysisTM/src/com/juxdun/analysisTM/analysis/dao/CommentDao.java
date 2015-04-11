@@ -17,9 +17,9 @@ public interface CommentDao {
 //	void batchInsertComments(List<Object[]> batchArgs);
 	
 	/**
-	 * 移除水军评论
+	 * 标记水军评论
 	 */
-	void deleteWaterArmy();
+	void signWaterArmy();
 	
 	/**
 	 * 移除<10 个字符评论

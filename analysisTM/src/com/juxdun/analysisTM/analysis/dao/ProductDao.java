@@ -27,7 +27,11 @@ public interface ProductDao {
 	void batchInsertProducts(List<Product> products);
 	
 	/**
-	 * 连接数据库tm_products和tm_comments的索引id
+	 * 向tm_products写入统计数据
+	 * 
+	 * 1. 连接数据库tm_products和tm_comments的索引id
+	 * 2. 某商品的评论数
+	 * 3. 某商品的水军数
 	 */
 	void updateProductTable();
 	

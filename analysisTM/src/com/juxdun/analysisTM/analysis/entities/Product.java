@@ -7,8 +7,9 @@ package com.juxdun.analysisTM.analysis.entities;
  */
 public class Product {
 	private int id;
-	private String clueid;
+	private Integer clueid;
 	private String fullpath;
+//	private String commentClueId;
 
 	/**
 	 * 商品名
@@ -48,11 +49,11 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getClueid() {
+	public Integer getClueid() {
 		return clueid;
 	}
 
-	public void setClueid(String clueid) {
+	public void setClueid(Integer clueid) {
 		this.clueid = clueid;
 	}
 

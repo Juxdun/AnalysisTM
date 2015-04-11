@@ -9,7 +9,7 @@ public class Comment {
 	
 	private int id;
 	
-	private String clueid;
+	private Integer clueid;
 	
 	private String baseURI;
 
@@ -63,12 +63,12 @@ public class Comment {
 		this.person = person;
 	}
 
-	public String getClueid() {
+	public Integer getClueid() {
 		return clueid;
 	}
 
 
-	public void setClueid(String clueid) {
+	public void setClueid(Integer clueid) {
 		this.clueid = clueid;
 	}
 	
@@ -106,7 +106,7 @@ public class Comment {
 	}
 
 
-	public Comment(String clueid, String content, String date, String person) {
+	public Comment(Integer clueid, String content, String date, String person) {
 		super();
 		this.clueid = clueid;
 		this.content = content;

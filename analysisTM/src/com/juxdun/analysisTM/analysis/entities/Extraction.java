@@ -13,7 +13,8 @@ public class Extraction {
 	/**
 	 * 索引id
 	 */
-	private String clueid;
+	private Integer clueid;
+//	private String clueid;
 
 	/**
 	 * 路径
@@ -40,9 +41,12 @@ public class Extraction {
 	 */
 	private List list;
 
-	public String getClueid() {
+	public Integer getClueid() {
 		return clueid;
 	}
+	/*public String getClueid() {
+		return clueid;
+	}*/
 
 	public String getFullpath() {
 		return fullpath;

@@ -42,7 +42,8 @@ public class CommentDaoImpl implements CommentDao {
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
 				Comment c = comments.get(index);
-				ps.setString(1, c.getClueid());
+//				ps.setString(1, c.getClueid());
+				ps.setInt(1, c.getClueid());
 				ps.setString(2, c.getBaseURI());
 				ps.setString(3, c.getContent());
 				ps.setString(4, c.getDate());
@@ -62,9 +63,9 @@ public class CommentDaoImpl implements CommentDao {
 	}*/
 
 	@Override
-	public void deleteWaterArmy() {
+	public void signWaterArmy() {
 //		String sql = "DELETE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
-		String sql = "UPDATE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
+		String sql = "UPDATE tm_comments SET IS_WATERARMY=1 WHERE ID IN (SELECT a.ID FROM( SELECT t1.ID	FROM tm_comments AS t1,(SELECT DATE,PERSON	FROM tm_comments GROUP BY DATE, PERSON	HAVING COUNT(1)>1 ) AS t2 WHERE t1.PERSON=t2.PERSON	AND t1.DATE=t2.DATE	)AS a)";
 		jdbcTemplate.update(sql);
 	}
 	
