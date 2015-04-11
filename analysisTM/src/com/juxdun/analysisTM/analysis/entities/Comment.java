@@ -81,11 +81,11 @@ public class Comment {
 		this.baseURI = baseURI;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", clueid=" + clueid + ", content="
-				+ content + ", date=" + date + ", person=" + person + "]";
+		return "Comment [id=" + id + ", clueid=" + clueid + ", baseURI="
+				+ baseURI + ", content=" + content + ", date=" + date
+				+ ", person=" + person + "]";
 	}
 
 

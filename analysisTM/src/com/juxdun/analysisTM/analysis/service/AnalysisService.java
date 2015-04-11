@@ -3,6 +3,7 @@ package com.juxdun.analysisTM.analysis.service;
 import java.util.List;
 
 import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Comment;
 import com.juxdun.analysisTM.analysis.entities.Detail;
 import com.juxdun.analysisTM.analysis.entities.Product;
 
@@ -31,6 +32,13 @@ public interface AnalysisService {
 	 * @return 商品列表
 	 */
 	List<Product> listProductByBrand(Brand brand);
+	
+	/**
+	 * 列出某品牌的商品
+	 * @param cludid 品牌索引
+	 * @return 商品列表
+	 */
+	List<Comment> listCommentByProduct(Product product);
 	
 	/**
 	 * 拿到某以商品详情

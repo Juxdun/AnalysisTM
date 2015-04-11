@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  <a href="home">home</a>
   <a href="update">update</a>
 </body>
 </html>

@@ -9,13 +9,13 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
-import com.juxdun.analysisTM.analysis.entities.Brand;
 import com.juxdun.analysisTM.analysis.entities.Comment;
-import com.juxdun.analysisTM.analysis.entities.Detail;
 import com.juxdun.analysisTM.analysis.entities.Product;
 
+@Repository("commentDao")
 public class CommentDaoImpl implements CommentDao {
 
 	@Autowired
@@ -63,7 +63,8 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public void deleteWaterArmy() {
-		String sql = "DELETE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
+//		String sql = "DELETE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
+		String sql = "UPDATE FROM `tm_comments` USING `tm_comments`,(SELECT * FROM `tm_comments` GROUP BY `date`,`person` HAVING COUNT(1) > 1 ) AS `t2` WHERE `tm_comments`.`date` = `t2`.`date` AND `tm_comments`.`person` = `t2`.`person`";
 		jdbcTemplate.update(sql);
 	}
 	
@@ -71,6 +72,14 @@ public class CommentDaoImpl implements CommentDao {
 	public void deleteLess10Char(){
 		String sql = "DELETE FROM `tm_comments` WHERE char_length(content) <= 10 ";
 		jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public List<Comment> getCommentsByProduct(Product product) {
+		String sql = "SELECT * FROM `tm_comments` WHERE BASE_URI LIKE '%"+product.getPage()+"%'";
+		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper);
+		return list;
 	}
 
 }

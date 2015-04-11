@@ -3,6 +3,7 @@ package com.juxdun.analysisTM.analysis.dao;
 import java.util.List;
 
 import com.juxdun.analysisTM.analysis.entities.Comment;
+import com.juxdun.analysisTM.analysis.entities.Product;
 
 public interface CommentDao {
 	
@@ -24,5 +25,13 @@ public interface CommentDao {
 	 * 移除<10 个字符评论
 	 */
 	void deleteLess10Char();
+	
+	
+	/**
+	 * 取评论
+	 * @param product 根据商品
+	 * @return 列表
+	 */
+	List<Comment> getCommentsByProduct(Product product);
 
 }

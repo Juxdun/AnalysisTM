@@ -6,7 +6,7 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Product {
-//	private int id;
+	private int id;
 	private String clueid;
 	private String fullpath;
 
@@ -39,6 +39,14 @@ public class Product {
 	 * 商店链接
 	 */
 	private String shopUrl;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getClueid() {
 		return clueid;

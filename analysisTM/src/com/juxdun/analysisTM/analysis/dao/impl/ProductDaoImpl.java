@@ -9,11 +9,13 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.juxdun.analysisTM.analysis.dao.ProductDao;
 import com.juxdun.analysisTM.analysis.entities.Brand;
 import com.juxdun.analysisTM.analysis.entities.Product;
 
+@Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
@@ -56,6 +58,51 @@ public class ProductDaoImpl implements ProductDao{
 		List<Product> list = jdbcTemplate.query(sql, rowMapper);
 		
 		return list;
+	}
+
+	@Override
+	public List<Product> getAllProducts() {
+		String sql = "SELECT * FROM `tm_products`";
+		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
+		List<Product> list = jdbcTemplate.query(sql, rowMapper);
+		
+		return list;
+	}
+
+	@Override
+	public void updateProductTable() {
+		List<Product> list = this.getAllProducts();
+		// 连接tm_comments表的clueId
+		String sql1 = "SELECT CLUEID FROM tm_comments WHERE BASE_URI LIKE ? GROUP BY CLUEID";
+		// 该商品的评论数
+		String sql2 = "SELECT COUNT(*) FROM tm_comments WHERE CLUEID=?";
+		// 水军数
+		String sql3 = "SELECT COUNT(*) FROM tm_comments WHERE CLUEID=? AND IS_WATERARMY=1";
+		// 更新tm_products表
+		String sql = "UPDATE tm_products SET COMMENT_CLUEID=?, COMMENT_COUNT=?, WATER_COUNT=? WHERE ID = ?";
+		String clueid = null;
+		Integer commentCount = null;
+		Integer waterCount = null;
+		
+		for (Product p : list) {
+			try {				
+				clueid = jdbcTemplate.queryForObject(sql1, String.class, "%"+p.getPage()+"%");
+			} catch (Exception e) {
+//				System.out.println("1");
+				continue;
+			}
+			commentCount = jdbcTemplate.queryForObject(sql2, Integer.class, clueid);
+			waterCount = jdbcTemplate.queryForObject(sql3, Integer.class, clueid);
+			jdbcTemplate.update(sql, clueid, commentCount, waterCount, p.getId());
+			
+		}
+		
+	}
+
+	@Override
+	public void countCommentOfEveryProduct() {
+		
+		
 	}
 
 }

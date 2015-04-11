@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
 import com.juxdun.analysisTM.analysis.dao.ProductDao;
 import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Comment;
 import com.juxdun.analysisTM.analysis.entities.Detail;
 import com.juxdun.analysisTM.analysis.entities.Product;
 import com.juxdun.analysisTM.analysis.service.AnalysisService;
@@ -54,6 +55,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 	 */
 	@Override
 	public void analyse() {
+		productDao.updateProductTable();
 //		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
 //		commentDao.deleteWaterArmy();
 //		productDao.batchInsertProducts(xSteamUtil.getProducts());
@@ -147,8 +149,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public List<Product> listAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return productDao.getAllProducts();
 	}
 
 	@Override
@@ -160,6 +161,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 	public Detail getDetailById(String cludid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Comment> listCommentByProduct(Product product) {
+		return commentDao.getCommentsByProduct(product);
 	}
 
 }

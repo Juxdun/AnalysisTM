@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.juxdun.analysisTM.analysis.entities.Brand;
+import com.juxdun.analysisTM.analysis.entities.Comment;
 import com.juxdun.analysisTM.analysis.entities.Product;
 import com.juxdun.analysisTM.analysis.service.AnalysisService;
 
@@ -20,11 +21,14 @@ public class HomeController {
 	@RequestMapping("/home")
 	public String home(Map<String, Object> map){
 		List<Brand> list = service.listBrands();
-		Brand brand = list.get(5);
-		List<Product> products = service.listProductByBrand(brand);
+		Brand brand = list.get(12);
+		List<Product> products = service.listAllProducts();
+		Product product = products.get(19);
+		List<Comment> comments = service.listCommentByProduct(product);
 		
 		map.put("brands", list);
 		map.put("products", products);
+		map.put("comments", comments);
 		System.out.println("home");
 		return "home";
 	}
