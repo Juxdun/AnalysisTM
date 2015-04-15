@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
 import com.juxdun.analysisTM.analysis.entities.Comment;
-import com.juxdun.analysisTM.analysis.entities.Product;
 
 @Repository("commentDao")
 public class CommentDaoImpl implements CommentDao {
@@ -76,10 +75,10 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
-	public List<Comment> getCommentsByProduct(Product product) {
-		String sql = "SELECT * FROM `tm_comments` WHERE BASE_URI LIKE '%"+product.getPage()+"%'";
+	public List<Comment> getCommentsByClueid(Integer clueid) {
+		String sql = "SELECT * FROM `tm_comments` WHERE clueid=?";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
-		List<Comment> list = jdbcTemplate.query(sql, rowMapper);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid);
 		return list;
 	}
 

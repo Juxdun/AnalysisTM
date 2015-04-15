@@ -38,7 +38,7 @@ public interface AnalysisService {
 	 * @param cludid 品牌索引
 	 * @return 商品列表
 	 */
-	List<Comment> listCommentByProduct(Product product);
+	List<Comment> listCommentByClueid(Integer clueid);
 	
 	/**
 	 * 拿到某以商品详情

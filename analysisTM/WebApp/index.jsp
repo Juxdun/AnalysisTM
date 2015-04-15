@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>正在跳转到主页。。</title>
 </head>
 <body>
-
+<% response.sendRedirect("home");%>
+正在跳转到主页。。
   <a href="home">home</a>
   <a href="update">update</a>
 </body>

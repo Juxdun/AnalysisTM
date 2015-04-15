@@ -71,8 +71,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public List<Comment> listCommentByProduct(Product product) {
-		return commentDao.getCommentsByProduct(product);
+	public List<Comment> listCommentByClueid(Integer clueid) {
+		return commentDao.getCommentsByClueid(clueid);
 	}
 
 }
