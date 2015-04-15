@@ -6,9 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.juxdun.analysisTM.analysis.entities.Brand;
-import com.juxdun.analysisTM.analysis.entities.Comment;
 import com.juxdun.analysisTM.analysis.entities.Product;
 import com.juxdun.analysisTM.analysis.service.AnalysisService;
 
@@ -23,13 +24,15 @@ public class HomeController {
 		List<Brand> list = service.listBrands();
 		Brand brand = list.get(12);
 		List<Product> products = service.listAllProducts();
-		Product product = products.get(19);
-		List<Comment> comments = service.listCommentByProduct(product);
 		
 		map.put("brands", list);
 		map.put("products", products);
-		map.put("comments", comments);
-		System.out.println("home");
 		return "home";
+	}
+
+	@ResponseBody
+	@RequestMapping("/getproducts")
+	public List<Product> getProduct(@RequestParam("brand") Integer productClueid){
+		return service.listProductByProductClueid(productClueid);
 	}
 }

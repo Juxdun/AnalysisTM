@@ -9,7 +9,6 @@ public class Product {
 	private int id;
 	private Integer clueid;
 	private String fullpath;
-//	private String commentClueId;
 
 	/**
 	 * 商品名
@@ -40,6 +39,14 @@ public class Product {
 	 * 商店链接
 	 */
 	private String shopUrl;
+	
+	private Integer star;
+	
+	private Integer commentCount;
+	
+	private Integer waterCount;
+	
+	private Integer commentClueid;
 
 	public int getId() {
 		return id;
@@ -111,6 +118,38 @@ public class Product {
 
 	public void setShopUrl(String shopUrl) {
 		this.shopUrl = shopUrl;
+	}
+
+	public Integer getStar() {
+		return star;
+	}
+
+	public void setStar(Integer star) {
+		this.star = star;
+	}
+
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public Integer getWaterCount() {
+		return waterCount;
+	}
+
+	public void setWaterCount(Integer waterCount) {
+		this.waterCount = waterCount;
+	}
+
+	public Integer getCommentClueid() {
+		return commentClueid;
+	}
+
+	public void setCommentClueid(Integer commentClueid) {
+		this.commentClueid = commentClueid;
 	}
 
 	@Override

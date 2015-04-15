@@ -31,7 +31,7 @@ public interface AnalysisService {
 	 * @param cludid 品牌索引
 	 * @return 商品列表
 	 */
-	List<Product> listProductByBrand(Brand brand);
+	List<Product> listProductByProductClueid(Integer productClueid);
 	
 	/**
 	 * 列出某品牌的商品

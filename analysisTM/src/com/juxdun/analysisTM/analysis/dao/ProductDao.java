@@ -2,7 +2,6 @@ package com.juxdun.analysisTM.analysis.dao;
 
 import java.util.List;
 
-import com.juxdun.analysisTM.analysis.entities.Brand;
 import com.juxdun.analysisTM.analysis.entities.Product;
 
 public interface ProductDao {
@@ -12,7 +11,7 @@ public interface ProductDao {
 	 * @param brand 根据品牌
 	 * @return 列表
 	 */
-	List<Product> getProductsByBrand(Brand brand);
+	List<Product> getProductsByProductClueid(Integer productClueid);
 
 	/**
 	 * 取全部商品
@@ -35,5 +34,4 @@ public interface ProductDao {
 	 */
 	void updateProductTable();
 	
-	void countCommentOfEveryProduct();
 }

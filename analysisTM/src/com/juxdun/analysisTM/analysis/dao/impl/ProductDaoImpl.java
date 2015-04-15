@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.juxdun.analysisTM.analysis.dao.ProductDao;
-import com.juxdun.analysisTM.analysis.entities.Brand;
 import com.juxdun.analysisTM.analysis.entities.Product;
 
 @Repository("productDao")
@@ -53,10 +52,10 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<Product> getProductsByBrand(Brand brand) {
-		String sql = "SELECT * FROM `tm_products` WHERE fullpath LIKE '%"+brand.getPage()+"%'";
+	public List<Product> getProductsByProductClueid(Integer productClueid) {
+		String sql = "SELECT * FROM `tm_products` WHERE clueid = ?";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
-		List<Product> list = jdbcTemplate.query(sql, rowMapper);
+		List<Product> list = jdbcTemplate.query(sql, rowMapper, productClueid);
 		
 		return list;
 	}
@@ -100,10 +99,5 @@ public class ProductDaoImpl implements ProductDao{
 		
 	}
 
-	@Override
-	public void countCommentOfEveryProduct() {
-		
-		
-	}
 
 }

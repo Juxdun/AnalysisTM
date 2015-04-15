@@ -6,34 +6,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>首页</title>
-	<style>
-	.content{
-		width: 1000px;
-    margin: auto;
-	}
-	img{
-	  width: 102px;
-	  height: 50px;
-	  border: 1px solid gray;
-	}
-	.list{
-	  width: 1000px;
-    margin: auto;
-	}
-	.product-item{
-	  padding: 10px;
-	  border: 1px solid darkgray;
-	  margin: 3px 0px;
-	}
-	</style>
+<link rel="stylesheet" type="text/css" href="views/home.css">
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".content a").click(function(){
+			var url = this.href;
+			$.getJSON(url, function(data){
+				// 清空列表
+				$(".list").empty();
+				
+				// 把Json数据生成列表项
+				for(var i = 0; i < data.length; i++){
+					$(".list").append('<div class="product-item"><div style="margin: 3px;">'+data[i].name+' &nbsp;&nbsp; <a style="float: right;" href="'+data[i].page+'">详情</a></div><div style="margin: 3px;">'+data[i].price+'</div><a href="#">有效评论</a></div>')
+				}
+			});
+			return false;
+		});
+	})
+</script>
 </head>
 <body>
 	<div class="content">
 	  <c:forEach var="brand" items="${requestScope.brands }" >
-	    <a href=""  style="text-decoration: none;"><img src="${brand.img}" /> </a>
+	    <a href="getproducts?brand=${brand.productClueid }" style="text-decoration: none;"><img src="${brand.img}" /> </a>
 
     </c:forEach>
-
 	</div>
 
 	<div id="list" class="list">
@@ -41,20 +39,11 @@
       <div class="product-item">
         <div style="margin: 3px;">${product.name} &nbsp;&nbsp; <a style="float: right;" href="${product.page}">详情</a></div>
         <div style="margin: 3px;">${product.price}</div>
+        <a href="#">有效评论</a>
       </div>
 
     </c:forEach>
-
 	</div>
 
-
-
-
-    <br /><br />
-	${requestScope.comments }
-    <br /><br />
-
-
-home
 </body>
 </html>

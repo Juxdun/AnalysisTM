@@ -6,6 +6,10 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Brand {
+	
+	private Integer id;
+	
+	private Integer productClueid;
 
 	/**
 	 * 名
@@ -21,6 +25,34 @@ public class Brand {
 	 * 图片链接
 	 */
 	private String img;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getProductClueid() {
+		return productClueid;
+	}
+
+	public void setProductClueid(Integer productClueid) {
+		this.productClueid = productClueid;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 
 	public String getName() {
 		return name;

@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+.content {
+	width: 1000px;
+	margin: auto;
+}
+
+img {
+	width: 102px;
+	height: 50px;
+	border: 1px solid gray;
+}
+
+.list {
+	width: 1000px;
+	margin: auto;
+}
+
+.product-item {
+	padding: 10px;
+	border: 1px solid darkgray;
+	margin: 3px 0px;
+}
