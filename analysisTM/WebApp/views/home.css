@@ -1,8 +1,7 @@
 @CHARSET "UTF-8";
 
-.content {
-	width: 1000px;
-	margin: auto;
+a{
+	text-decoration: none;
 }
 
 img {
@@ -11,7 +10,12 @@ img {
 	border: 1px solid gray;
 }
 
-.list {
+.content {
+	width: 1000px;
+	margin: auto;
+}
+
+.product-list {
 	width: 1000px;
 	margin: auto;
 }
@@ -20,4 +24,18 @@ img {
 	padding: 10px;
 	border: 1px solid darkgray;
 	margin: 3px 0px;
+}
+
+.product-item :hover{
+	box-shadow: 1px 1px 10px #888888;
+}
+
+.product-img{
+	float: left; 
+	width: 60px; 
+	height: 60px;
+}
+
+.comment-list{
+	background-color: #e3e4e2;
 }

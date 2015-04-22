@@ -6,8 +6,6 @@ import com.juxdun.analysisTM.analysis.entities.Comment;
 
 public interface CommentDao {
 	
-	Comment get(int id);
-	
 	/**
 	 * 保存评论
 	 * @param comments

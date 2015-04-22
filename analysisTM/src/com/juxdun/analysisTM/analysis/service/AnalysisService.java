@@ -11,6 +11,10 @@ public interface AnalysisService {
 	
 	/**
 	 * 分析
+	 * 1. 存数据到数据库
+	 * 2. sql标记水军
+	 * 3. sql建立商品和评论的索引，通过clueid连接 
+	 * 4. sql建立品牌和商品的索引，通过clueid连接
 	 */
 	void analyse();
 	
@@ -46,5 +50,12 @@ public interface AnalysisService {
 	 * @return 商品详情
 	 */
 	Detail getDetailById(String cludid);
+
+	/**
+	 * 搜索
+	 * @param wd 关键字
+	 * @return 列表
+	 */
+	List<Product> searchProduct(String wd);
 
 }

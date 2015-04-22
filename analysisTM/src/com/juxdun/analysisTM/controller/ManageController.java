@@ -18,9 +18,9 @@ public class ManageController {
 		return "manage/update";
 	}
 	
-	@RequestMapping("update/analysis")
-	public void analysis(){
+	@RequestMapping("analysis")
+	public String analysis(){
 		service.analyse();
-		System.out.println("update/analysis");
+		return "success";
 	}
 }

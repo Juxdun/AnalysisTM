@@ -1,5 +1,7 @@
 package com.juxdun.analysisTM.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +25,19 @@ public class HomeController {
 	@RequestMapping("/home")
 	public String home(Map<String, Object> map) {
 		List<Brand> list = service.listBrands();
-		List<Product> products = service.listAllProducts();
+//		List<Product> products = service.listAllProducts();
 
 		map.put("brands", list);
-		map.put("products", products);
+//		map.put("products", products);
 		return "home";
 	}
 
+	@ResponseBody
+	@RequestMapping("/getAllProducts")
+	public List<Product> getAllProduct() {
+		return service.listAllProducts();
+	}
+	
 	@ResponseBody
 	@RequestMapping("/getproducts")
 	public List<Product> getProduct(@RequestParam("brand") Integer productClueid) {
@@ -41,5 +49,18 @@ public class HomeController {
 	public List<Comment> getComment(
 			@RequestParam("clueid") Integer clueid) {
 		return service.listCommentByClueid(clueid);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/search")
+	public List<Product> search(@RequestParam("wd") String wd) {
+		String s = null;
+		try {
+			s = new String(wd.getBytes("iso8859-1"),"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return service.searchProduct(s);
 	}
 }

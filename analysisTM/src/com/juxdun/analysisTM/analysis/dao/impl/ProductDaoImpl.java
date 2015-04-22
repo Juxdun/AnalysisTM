@@ -99,5 +99,14 @@ public class ProductDaoImpl implements ProductDao{
 		
 	}
 
+	@Override
+	public List<Product> searchProduct(String wd) {
+		String sql = "SELECT * FROM `tm_products` WHERE NAME LIKE ?";
+		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
+		List<Product> list = jdbcTemplate.query(sql, rowMapper, "%"+wd+"%");
+		
+		return list;
+	}
+
 
 }

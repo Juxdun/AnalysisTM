@@ -25,15 +25,6 @@ public class CommentDaoImpl implements CommentDao {
 	}
 	
 	@Override
-	public Comment get(int id) {
-		String sql = "SELECT * FROM tm_comments WHERE id = ?";
-		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
-		Comment comment = jdbcTemplate.queryForObject(sql, rowMapper, id);
-		
-		return comment;
-	}
-
-	@Override
 	public void batchInsertComments(final List<Comment> comments) {
 		String sql = "INSERT tm_comments(clueid, base_uri, content, date, person) values(?,?,?,?,?)";
 		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -41,7 +32,6 @@ public class CommentDaoImpl implements CommentDao {
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
 				Comment c = comments.get(index);
-//				ps.setString(1, c.getClueid());
 				ps.setInt(1, c.getClueid());
 				ps.setString(2, c.getBaseURI());
 				ps.setString(3, c.getContent());
@@ -55,11 +45,6 @@ public class CommentDaoImpl implements CommentDao {
 			}
 		});
 	}
-	/*@Override
-	public void batchInsertComments(List<Object[]> batchArgs) {
-		String sql = "INSERT tm_comments(clueid, content, date, person) values(?,?,?,?)";
-		jdbcTemplate.batchUpdate(sql, batchArgs);
-	}*/
 
 	@Override
 	public void signWaterArmy() {
@@ -76,7 +61,7 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public List<Comment> getCommentsByClueid(Integer clueid) {
-		String sql = "SELECT * FROM `tm_comments` WHERE clueid=?";
+		String sql = "SELECT * FROM `tm_comments` WHERE clueid=? AND char_length(content) > 10 AND IS_WATERARMY=0";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
 		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid);
 		return list;

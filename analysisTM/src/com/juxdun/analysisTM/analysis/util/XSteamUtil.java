@@ -26,8 +26,6 @@ public class XSteamUtil {
 			"C:/Users/Juxdun/DataScraperWorks/Ju_TM_PHONE_comment");
 	public static String XMLsuffix = ".xml";
 	
-//	XStream xstream = new XStream();
-	
 	/**
 	 * 拿到品牌列表
 	 * @return

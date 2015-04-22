@@ -33,5 +33,13 @@ public interface ProductDao {
 	 * 3. 某商品的水军数
 	 */
 	void updateProductTable();
+
+	/**
+	 * 搜索
+	 * 根据关键字搜索Product
+	 * @param wd 关键字
+	 * @return Product的集合
+	 */
+	List<Product> searchProduct(String wd);
 	
 }

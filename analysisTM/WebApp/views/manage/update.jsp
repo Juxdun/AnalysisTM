@@ -7,6 +7,6 @@
 <title>更新</title>
 </head>
 <body>
-  <a href="update/analysis">更新</a>
+  <a href="analysis">更新</a>
 </body>
 </html>

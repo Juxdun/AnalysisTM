@@ -31,22 +31,22 @@ public class AnalysisServiceImpl implements AnalysisService {
 	private XSteamUtil xSteamUtil;
 	
 	/**
-	 * 去除水军分析
-	 * 1.拿到所有的comment
-	 * 2.存到数据库
-	 * 3.数据库去除水军
+	 * 分析
+	 * 1. 存数据到数据库
+	 * 2. sql标记水军
+	 * 3. sql建立商品和评论的索引，通过clueid连接 
+	 * 4. sql建立品牌和商品的索引，通过clueid连接
 	 */
 	@Override
 	public void analyse() {
-//		brandDao.batchInsertBrands(xSteamUtil.getBrands());
-//		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
-//		productDao.batchInsertProducts(xSteamUtil.getProducts());
-//		
-//		commentDao.signWaterArmy();
-//		productDao.updateProductTable();
-//		brandDao.updateBrandTable();
+		brandDao.batchInsertBrands(xSteamUtil.getBrands());
+		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
+		productDao.batchInsertProducts(xSteamUtil.getProducts());
 		
-//		// 4.hash收集有用评论
+		commentDao.signWaterArmy();
+		productDao.updateProductTable();
+		brandDao.updateBrandTable();
+		
 	}
 
 	@Override
@@ -73,6 +73,12 @@ public class AnalysisServiceImpl implements AnalysisService {
 	@Override
 	public List<Comment> listCommentByClueid(Integer clueid) {
 		return commentDao.getCommentsByClueid(clueid);
+	}
+
+	@Override
+	public List<Product> searchProduct(String wd) {
+		
+		return productDao.searchProduct(wd);
 	}
 
 }
