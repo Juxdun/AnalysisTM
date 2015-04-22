@@ -10,13 +10,18 @@ img {
 	border: 1px solid gray;
 }
 
+.search-box{
+	width: 288px;
+	margin: 10px auto;
+}
+
 .content {
 	width: 1000px;
 	margin: auto;
 }
 
 .product-list {
-	width: 1000px;
+	width: 700px;
 	margin: auto;
 }
 
@@ -26,14 +31,14 @@ img {
 	margin: 3px 0px;
 }
 
-.product-item :hover{
+a :hover{
 	box-shadow: 1px 1px 10px #888888;
 }
 
 .product-img{
 	float: left; 
-	width: 60px; 
-	height: 60px;
+	width: 80px; 
+	height: 80px;
 }
 
 .comment-list{

@@ -10,49 +10,61 @@
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var data = null
+		var prodNowPage = 0
+		var prodPageCount = 0
 		// 事件：获取评论
 		var commEvent = function(){
 			var url = this.href;
 			var a = $(this);
 			$.getJSON(url, function(data){
 				// 清空列表
-				a.next("div").empty();
+				a.next("ul").empty();
 				// JSON变为列表显示
 				for(var i = 0; i < 10; i++){
-					a.next("div").append('<p>'+(i+1)+'、'+data[i].content+'</p>');
+					a.next("ul").append('<li><p>'+(i+1)+'、'+data[i].content+'</p></li>');
 				}
 				
 			});
 			return false;
 		}
 		
-		// 事件：用json组装product-item
-		var itemEven = function(data){
+		function pageImpl(data, nowPage) {
 			// JSON变为列表显示
-			for(var i = 0; i < data.length; i++){
+			for(var i = nowPage * 20; i < data.length && i < (nowPage * 20 + 20); i++){
 				var item = $(
 						'<li class="product-item">'+
 							'<a href="'+data[i].page+'">'+
 								'<img class="product-img" src="'+data[i].img+'">'+
-								'<div style="margin-left: 100px;">'+
-									'<div>'+data[i].name+'</div>'+
-									'<div>'+data[i].price+'</div>'+
+								'<div style="margin-left: 200px;">'+
+									'<h3>'+data[i].name+'</h3>'+
+									'<p>'+data[i].price+'</p>'+
 								'</div>'+
 								'<a href="getcomments?clueid='+data[i].commentClueid+'">推荐评论 ('+
 									(data[i].commentCount-data[i].waterCount)+'/'+
 									(data[i].commentCount-0)+')</a>'+
-								'<div class="comment-list"></div>'+
+								'<ul class="comment-list"></ul>'+
 							'</a>'+
 						'</li>'
 				);
 				if (data[i].commentCount != null) {
-					item.css("background-color", "#e3e4e2");
+					item.css("background-color", "rgb(145, 218, 173)");
 				}
 				$("#product-list").append(item);
 			}
 			
 			// 添加事件
 			$("#product-list a[href^='getcomments']").click(commEvent);
+		}
+		
+		// 事件：用json组装product-item
+		var itemEven = function(json){
+			data = json
+			prodNowPage = 0;
+			prodPageCount = Math.ceil(data.length / 20)
+			pageImpl(data, prodNowPage);
+			
+			$("#page-tag").text((prodNowPage+1) +"/"+ prodPageCount);
 		};
 		
 		// 每个品牌添加事件
@@ -87,27 +99,62 @@
 		
 		// 文档准备好，加载全部的product
 		$.getJSON("getAllProducts", itemEven);
+		
+		// 上一页
+		$("#pre").click(function(){
+			// 翻页
+			if (prodNowPage > 0) {
+				// 清空列表
+				$("#product-list").empty();
+				prodNowPage --
+				pageImpl(data, prodNowPage);
+				
+				$("#page-tag").text((prodNowPage+1) +"/"+ prodPageCount);
+			}else {
+				// 如果不翻页，就不定位
+				return false;
+			}
+		});
+		
+		// 下一页
+		$("#next").click(function(){
+			// 翻页
+			if (prodNowPage < prodPageCount - 1) {
+				// 清空列表
+				$("#product-list").empty();
+				prodNowPage ++
+				pageImpl(data, prodNowPage);
+				
+				$("#page-tag").text((prodNowPage+1) +"/"+ prodPageCount);
+			}else {
+				return false;
+			}
+		});
 	})
 </script>
 </head>
 <body>
+	
 	<ul class="content">
-		<form action="search">
-			<input type="text" value="苹果" name="wd"/>
-			<input type="submit" value="搜索"/>
-		</form>
 	
 	  	<c:forEach var="brand" items="${requestScope.brands }" >
 	    	
 	    	<li style="display:inline">
 		    	<a href="getproducts?brand=${brand.productClueid }">
-		    		<img src="${brand.img}" /> 
+		    		<img src="${brand.img}" alt="${brand.name }"/> 
 		    	</a>
 	    	</li>
 	    	
     	</c:forEach>
 	</ul>
-
+	
+	<div id="search-box" class="search-box">
+		<form action="search">
+			<input type="text" placeholder="输入商品型号" name="wd"/>
+			<input type="submit" value="搜索"/>
+		</form>
+	</div>
+	<p id="page-tag" class="product-list"></p>
 	<ul id="product-list" class="product-list">
 	  	<!-- 遍历 -->
 	  	<!-- 
@@ -130,6 +177,9 @@
 	</ul>
 	
 	<a style="position: fixed; bottom: 100px; right: 100px;" href="#">顶部</a>
+	
+	<a id="pre" style="position: fixed; top: 435px; left: 226px;" href="#search-box">上一页</a>
+	<a id="next" style="position: fixed; top: 435px; right: 190px;" href="#search-box">下一页</a>
 
 </body>
 </html>
