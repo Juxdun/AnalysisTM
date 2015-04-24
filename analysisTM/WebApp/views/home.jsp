@@ -5,9 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="views/home.css">
 <title>首页</title>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 		var data = null
@@ -35,7 +37,7 @@
 				var item = $(
 						'<li class="product-item">'+
 							'<a href="'+data[i].page+'">'+
-								'<img class="product-img" src="'+data[i].img+'">'+
+								'<img class="product-img img-rounded" src="'+data[i].img+'">'+
 								'<div style="margin-left: 200px;">'+
 									'<h3>'+data[i].name+'</h3>'+
 									'<p>'+data[i].price+'</p>'+
@@ -178,8 +180,10 @@
 	
 	<a style="position: fixed; bottom: 100px; right: 100px;" href="#">顶部</a>
 	
-	<a id="pre" style="position: fixed; top: 435px; left: 226px;" href="#search-box">上一页</a>
-	<a id="next" style="position: fixed; top: 435px; right: 190px;" href="#search-box">下一页</a>
+	<ul class="pager">
+		<li class="previous"><a id="pre" style="position: fixed; top: 435px; left: 226px;" href="#search-box">&larr; 上一页</a></li>
+		<li class="next"><a id="next" style="position: fixed; top: 435px; right: 190px;" href="#search-box">下一页 &rarr;</a></li>
+	</ul>
 
 </body>
 </html>

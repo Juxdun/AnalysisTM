@@ -67,4 +67,24 @@ public class CommentDaoImpl implements CommentDao {
 		return list;
 	}
 
+	@Override
+	public Integer getWaCount() {
+		String sql = "SELECT COUNT(*) FROM tm_comments WHERE IS_WATERARMY=1";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public Integer getAllCount() {
+		String sql = "SELECT COUNT(*) FROM tm_comments";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public List<Comment> getWaComments() {
+		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=1 ORDER BY PERSON";
+		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper);
+		return list;
+	}
+
 }

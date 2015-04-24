@@ -81,4 +81,19 @@ public class AnalysisServiceImpl implements AnalysisService {
 		return productDao.searchProduct(wd);
 	}
 
+	@Override
+	public Integer getWaCount() {
+		return commentDao.getWaCount();
+	}
+
+	@Override
+	public Integer getAllCount() {
+		return commentDao.getAllCount();
+	}
+
+	@Override
+	public List<Comment> getWaComments() {
+		return commentDao.getWaComments();
+	}
+
 }

@@ -31,4 +31,10 @@ public interface CommentDao {
 	 */
 	List<Comment> getCommentsByClueid(Integer clueid);
 
+	Integer getWaCount();
+
+	Integer getAllCount();
+
+	List<Comment> getWaComments();
+
 }

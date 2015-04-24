@@ -58,4 +58,10 @@ public interface AnalysisService {
 	 */
 	List<Product> searchProduct(String wd);
 
+	Integer getWaCount();
+
+	Integer getAllCount();
+
+	List<Comment> getWaComments();
+
 }
