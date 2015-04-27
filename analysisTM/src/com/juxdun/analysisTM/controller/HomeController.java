@@ -51,6 +51,20 @@ public class HomeController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/getKeywordComments")
+	public List<Comment> getKeywordComments(
+			@RequestParam("kw") String keyword, @RequestParam("clueid") Integer clueid) {
+		String s = null;
+		try {
+			s = new String(keyword.getBytes("iso8859-1"),"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return service.getKeywordComments(clueid, s);
+	}
+	
+	@ResponseBody
 	@RequestMapping("/search")
 	public List<Product> search(@RequestParam("wd") String wd) {
 		String s = null;

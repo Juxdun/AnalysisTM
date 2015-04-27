@@ -12,7 +12,7 @@
        border-radius:25px;
 	}
 </style>
-<title>后台</title>
+<title>后台管理</title>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
 <script type="text/javascript">
 	$(function(){

@@ -96,4 +96,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 		return commentDao.getWaComments();
 	}
 
+	@Override
+	public List<Comment> getKeywordComments(Integer clueid, String keyword) {
+		return commentDao.getKeywordComments(clueid, keyword);
+	}
+
 }

@@ -30,11 +30,32 @@ public interface CommentDao {
 	 * @return 列表
 	 */
 	List<Comment> getCommentsByClueid(Integer clueid);
-
+	
+	/**
+	 * 关键字取评论
+	 * @param clueid 
+	 * @param keyword
+	 * @return 列表
+	 */
+	List<Comment> getKeywordComments(Integer clueid, String keyword);
+	
+	/**
+	 * 取水军数
+	 * @return 数量
+	 */
 	Integer getWaCount();
 
+	/**
+	 * 取评论数
+	 * @return 数量
+	 */
 	Integer getAllCount();
 
+	/**
+	 * 取水军评论列表
+	 * 按人名排序
+	 * @return 列表
+	 */
 	List<Comment> getWaComments();
 
 }

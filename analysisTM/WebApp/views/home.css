@@ -4,10 +4,42 @@ a{
 	text-decoration: none;
 }
 
-img {
+ul{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+a :hover{
+	box-shadow: 1px 1px 10px #888888;
+}
+
+li.brandItem img {
 	width: 102px;
 	height: 50px;
 	border: 1px solid gray;
+}
+
+
+/*清除浮动*/
+.clearfix:after {
+    content: ".";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+
+/*brand有关的类*/
+
+.content {
+	width: 1000px;
+	margin: auto;
+}
+
+li.brandItem{
+	display: inline;
 }
 
 .search-box{
@@ -15,32 +47,57 @@ img {
 	margin: 10px auto;
 }
 
-.content {
-	width: 1000px;
-	margin: auto;
-}
+
+/*product有关的类*/
 
 .product-list {
 	width: 700px;
 	margin: auto;
 }
 
-.product-item {
-	padding: 10px;
-	border: 1px solid darkgray;
-	margin: 3px 0px;
+.product {
+	padding: 2px;
+	border-bottom: 1px solid darkgray;
+	margin: 5px 0px;
 }
 
-a :hover{
-	box-shadow: 1px 1px 10px #888888;
-}
-
-.product-img{
+.productImg{
 	float: left; 
-	width: 80px; 
-	height: 80px;
 }
+
+.productImg img{
+	width: 160px; 
+	height: 160px;
+}
+
+.proSell-price{
+	color: red;
+}
+
+
+/*comment有关的类*/
 
 .comment-list{
 	background-color: #e3e4e2;
+	display: none;
+}
+
+ul.commentTab li{
+	float: left;
+}
+
+ul.commentTab li a:link, ul.commentTab li a:visited{
+	display: block;
+	width: 70px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #98C0B1;
+	text-align: center;
+	padding: 4px;
+	text-decoration: none;
+}
+
+ul.commentTab li a:hover,ul.commentTab li a:active
+{
+background-color:#7A991A;
 }

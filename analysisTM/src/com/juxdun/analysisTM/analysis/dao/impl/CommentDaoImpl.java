@@ -87,4 +87,12 @@ public class CommentDaoImpl implements CommentDao {
 		return list;
 	}
 
+	@Override
+	public List<Comment> getKeywordComments(Integer clueid, String keyword) {
+		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=0 AND  clueid=?  AND CONTENT LIKE ?";
+		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid, "%" + keyword + "%");
+		return list;
+	}
+
 }

@@ -63,5 +63,7 @@ public interface AnalysisService {
 	Integer getAllCount();
 
 	List<Comment> getWaComments();
+	
+	List<Comment> getKeywordComments(Integer clueid, String keyword);
 
 }
