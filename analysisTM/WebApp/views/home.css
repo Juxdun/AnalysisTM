@@ -71,14 +71,16 @@ li.brandItem{
 }
 
 .proSell-price{
-	color: red;
+	color: #C00;
+	font-weight: 700;
+	font-size: 16px;
 }
 
 
 /*comment有关的类*/
 
 .comment-list{
-	background-color: #e3e4e2;
+	background-color: white;
 	display: none;
 }
 

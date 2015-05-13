@@ -19,9 +19,9 @@ public interface CommentDao {
 	void signWaterArmy();
 	
 	/**
-	 * 移除<10 个字符评论
+	 * 分析评论的好评度和差评度
 	 */
-	void deleteLess10Char();
+	void analyseLevel();
 	
 	
 	/**

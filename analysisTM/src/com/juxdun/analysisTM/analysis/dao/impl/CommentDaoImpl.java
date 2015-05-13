@@ -1,7 +1,9 @@
 package com.juxdun.analysisTM.analysis.dao.impl;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
 import com.juxdun.analysisTM.analysis.entities.Comment;
+import com.juxdun.analysisTM.analysis.util.ReadTxt;
 
 @Repository("commentDao")
 public class CommentDaoImpl implements CommentDao {
@@ -54,14 +57,38 @@ public class CommentDaoImpl implements CommentDao {
 	}
 	
 	@Override
-	public void deleteLess10Char(){
-		String sql = "DELETE FROM `tm_comments` WHERE char_length(content) <= 10 ";
-		jdbcTemplate.update(sql);
+	public void analyseLevel() {
+		// 初始化 positive_level 与 negative_level
+		jdbcTemplate.update("UPDATE tm_comments SET positive_level = 0, negative_level = 0");
+		
+		List<String> sqls = new ArrayList<String>();
+		// 差评度
+		File negativeFile = new File("D:\\Bussiniss analysis\\sentiment.dict.v1.0\\sentiment.dict.v1.0\\tsinghua.negative.gb.txt");
+		List<String> nList = ReadTxt.readTxtToList(negativeFile);
+		if (null != nList) {
+			for (String s : nList) {
+				sqls.add("UPDATE tm_comments SET negative_level = negative_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+			}
+		}
+		
+		// 好评度
+		File positiveFile = new File("D:\\Bussiniss analysis\\sentiment.dict.v1.0\\sentiment.dict.v1.0\\tsinghua.positive.gb.txt");
+		nList = ReadTxt.readTxtToList(positiveFile);
+		if (null != nList) {
+			for (String s : nList) {
+				sqls.add("UPDATE tm_comments SET positive_level = positive_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+			}
+		}
+		String[] sql = (String[])sqls.toArray(new String[sqls.size()]);
+		if (sql.length > 0) {
+			jdbcTemplate.batchUpdate(sql);
+		}
+		
 	}
 
 	@Override
 	public List<Comment> getCommentsByClueid(Integer clueid) {
-		String sql = "SELECT * FROM `tm_comments` WHERE clueid=? AND char_length(content) > 10 AND IS_WATERARMY=0";
+		String sql = "SELECT * FROM `tm_comments` WHERE clueid=? AND char_length(content) > 10 AND IS_WATERARMY=0 ORDER BY positive_level - negative_level DESC";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
 		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid);
 		return list;
@@ -89,7 +116,7 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public List<Comment> getKeywordComments(Integer clueid, String keyword) {
-		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=0 AND  clueid=?  AND CONTENT LIKE ?";
+		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=0 AND  clueid=?  AND CONTENT LIKE ? ORDER BY positive_level - negative_level DESC";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
 		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid, "%" + keyword + "%");
 		return list;

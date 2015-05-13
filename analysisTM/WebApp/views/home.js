@@ -68,7 +68,7 @@ function getCommentEvent() {
 	var url = this.href;
 	var a = $(this);
 	var commentList = a.parents(".commentTab").next(".comment-list");
-	commentList.slideToggle();
+	commentList.slideDown();
 	
 	var cList = commentList.children("#cList");
 	$.getJSON(url, function(data) {
@@ -182,6 +182,7 @@ function pPager(data, nowPage) {
 				'<ul class="commentTab clearfix">'+
 					'<li><a href="getcomments?clueid=' + data[i].commentClueid + '">推荐评论</a></li>'+
 	              	'<li><a href="getKeywordComments?kw=屏幕&clueid=' + data[i].commentClueid + '">屏幕</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=像素&clueid=' + data[i].commentClueid + '">像素</a></li>'+
 	              	'<li><a href="getKeywordComments?kw=内存&clueid=' + data[i].commentClueid + '">内存</a></li>'+
 	              	'<li><a href="getKeywordComments?kw=速度&clueid=' + data[i].commentClueid + '">速度</a></li>'+
 	              	'<li><a href="getKeywordComments?kw=CPU&clueid=' + data[i].commentClueid + '">CPU</a></li>'+
@@ -215,7 +216,14 @@ function pPager(data, nowPage) {
 	}
 
 	// 添加事件
-	$(".commentTab a").click(getCommentEvent);
+	$(".commentTab a").toggle(getCommentEvent, function(){
+		var commentList = $(this).parents(".commentTab").next(".comment-list");
+		if (commentList.is(":hidden")) {
+			getCommentEvent();
+		} else {
+			commentList.slideUp();
+		}
+	});
 }
 
 // 用JSON组装product-item

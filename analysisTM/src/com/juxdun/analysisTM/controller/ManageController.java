@@ -26,7 +26,7 @@ public class ManageController {
 	@RequestMapping("analysis")
 	public String analysis(){
 		service.analyse();
-		return "success";
+		return "manage/success";
 	}
 	
 	@ResponseBody

@@ -39,14 +39,14 @@ public class AnalysisServiceImpl implements AnalysisService {
 	 */
 	@Override
 	public void analyse() {
-		brandDao.batchInsertBrands(xSteamUtil.getBrands());
-		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
-		productDao.batchInsertProducts(xSteamUtil.getProducts());
-		
-		commentDao.signWaterArmy();
-		productDao.updateProductTable();
-		brandDao.updateBrandTable();
-		
+//		brandDao.batchInsertBrands(xSteamUtil.getBrands());
+//		commentDao.batchInsertComments(xSteamUtil.getCommentsFromXml());
+//		productDao.batchInsertProducts(xSteamUtil.getProducts());
+//		
+//		commentDao.signWaterArmy();
+//		productDao.updateProductTable();
+//		brandDao.updateBrandTable();
+		commentDao.analyseLevel();
 	}
 
 	@Override
