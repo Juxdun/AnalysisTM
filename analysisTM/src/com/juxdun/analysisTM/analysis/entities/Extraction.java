@@ -14,7 +14,6 @@ public class Extraction {
 	 * 索引id
 	 */
 	private Integer clueid;
-//	private String clueid;
 
 	/**
 	 * 路径
@@ -39,14 +38,11 @@ public class Extraction {
 	/**
 	 * 列表
 	 */
-	private List list;
+	private List<?> list;
 
 	public Integer getClueid() {
 		return clueid;
 	}
-	/*public String getClueid() {
-		return clueid;
-	}*/
 
 	public String getFullpath() {
 		return fullpath;
@@ -64,7 +60,7 @@ public class Extraction {
 		return baseURI;
 	}
 
-	public List getList() {
+	public List<?> getList() {
 		return list;
 	}
 

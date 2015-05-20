@@ -35,14 +35,14 @@ public interface AnalysisService {
 	 * @param cludid 品牌索引
 	 * @return 商品列表
 	 */
-	List<Product> listProductByProductClueid(Integer productClueid);
+	List<Product> listProductByBrandId(Integer brandId);
 	
 	/**
 	 * 列出某品牌的商品
 	 * @param cludid 品牌索引
 	 * @return 商品列表
 	 */
-	List<Comment> listCommentByClueid(Integer clueid);
+	List<Comment> listCommentByProductId(Integer proId);
 	
 	/**
 	 * 拿到某以商品详情
@@ -65,5 +65,7 @@ public interface AnalysisService {
 	List<Comment> getWaComments();
 	
 	List<Comment> getKeywordComments(Integer clueid, String keyword);
+
+	Product getProductById(Integer productId);
 
 }

@@ -39,15 +39,21 @@ public class HomeController {
 	
 	@ResponseBody
 	@RequestMapping("/getproducts")
-	public List<Product> getProduct(@RequestParam("brand") Integer productClueid) {
-		return service.listProductByProductClueid(productClueid);
+	public List<Product> getProduct(@RequestParam("brand") Integer brandId) {
+		return service.listProductByBrandId(brandId);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getpro")
+	public Product getProductById(@RequestParam("productId") Integer productId) {
+		return service.getProductById(productId);
 	}
 
 	@ResponseBody
 	@RequestMapping("/getcomments")
 	public List<Comment> getComment(
 			@RequestParam("clueid") Integer clueid) {
-		return service.listCommentByClueid(clueid);
+		return service.listCommentByProductId(clueid);
 	}
 	
 	@ResponseBody

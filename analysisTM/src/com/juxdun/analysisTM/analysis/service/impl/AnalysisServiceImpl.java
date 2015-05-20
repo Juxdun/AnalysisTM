@@ -60,8 +60,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public List<Product> listProductByProductClueid(Integer productClueid) {
-		return productDao.getProductsByProductClueid(productClueid);
+	public List<Product> listProductByBrandId(Integer productClueid) {
+		return productDao.getProductsByBrandId(productClueid);
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public List<Comment> listCommentByClueid(Integer clueid) {
-		return commentDao.getCommentsByClueid(clueid);
+	public List<Comment> listCommentByProductId(Integer clueid) {
+		return commentDao.getCommentsByProductId(clueid);
 	}
 
 	@Override
@@ -99,6 +99,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 	@Override
 	public List<Comment> getKeywordComments(Integer clueid, String keyword) {
 		return commentDao.getKeywordComments(clueid, keyword);
+	}
+
+	@Override
+	public Product getProductById(Integer productId) {
+		return productDao.getProductById(productId);
 	}
 
 }

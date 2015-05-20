@@ -9,14 +9,17 @@ public class Comment {
 	
 	private int id;
 	
-	private Integer clueid;
-	
 	private String baseURI;
 
 	/**
-	 * 内容
+	 * 评论内容
 	 */
 	private String content;
+	
+	/**
+	 * 追加评论
+	 */
+	private String append;
 	
 	/**
 	 * 日期
@@ -63,33 +66,23 @@ public class Comment {
 		this.person = person;
 	}
 
-	public Integer getClueid() {
-		return clueid;
-	}
-
-
-	public void setClueid(Integer clueid) {
-		this.clueid = clueid;
-	}
-	
 	public String getBaseURI() {
 		return baseURI;
 	}
-
 
 	public void setBaseURI(String baseURI) {
 		this.baseURI = baseURI;
 	}
 
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", clueid=" + clueid + ", baseURI="
-				+ baseURI + ", content=" + content + ", date=" + date
-				+ ", person=" + person + "]";
+	public String getAppend() {
+		return append;
 	}
 
+	public void setAppend(String append) {
+		this.append = append;
+	}
 
-	// 如果date和person相同，评论相同。
+	/*// 如果date和person相同，评论相同。
 	// 通过重写两个方法，在HashMap达到key相同
 	@Override
 	public boolean equals(Object obj) {
@@ -103,18 +96,6 @@ public class Comment {
 	@Override
 	public int hashCode() {
 		return date.trim().hashCode() + person.trim().hashCode();
-	}
+	}*/
 
-
-	public Comment(Integer clueid, String content, String date, String person) {
-		super();
-		this.clueid = clueid;
-		this.content = content;
-		this.date = date;
-		this.person = person;
-	}
-	
-	public Comment() {
-	}
-	
 }

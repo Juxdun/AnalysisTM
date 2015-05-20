@@ -26,14 +26,71 @@ $(function() {
 	$.getJSON("getAllProducts", loadPItem);
 	
 	//2. 每个品牌按钮添加事件
-	$(".content a").click(brandEvent);
+	$(".brands a").click(brandEvent);
 	
 	//3. “搜索”按钮添加事件
 	$("form [type='submit']").click(searchEvent);
 	
+	//4. 商品上一页
+	$("#pre").click(pPreEvent);
+	
+	//5. 商品下一页
+	$("#next").click(pNextEvent);
+	
 });
 
 /*---------------------------------定义方法--------------------------------------*/
+
+function detailEvent() {
+
+	var url = this.href;
+	
+	$("#detailmodal").modal();
+	
+	$('#myChart').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: '好评度分布情况：'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '度',
+            data: [
+                ['好评',   45.0],
+                ['差评',   26.8],
+                {
+                    name: '水军',
+                    y: 12.8,
+                    sliced: true,
+                    selected: true
+                }
+
+            ]
+        }]
+    });
+	
+	return false;
+}
 
 // 品牌按钮事件
 function brandEvent() {
@@ -136,11 +193,11 @@ function pPreEvent() {
 		pNowPage--;
 		pPager(data, pNowPage);
 
-		$("#page-tag").text((pNowPage + 1) + "/" + pPageCount);
+		$("#page-tag").text("第" + (pNowPage + 1) + "/" + pPageCount + "页        总商品数：" + data.length);
 	} else {
 		// 如果不翻页，就不定位
-		return false;
 	}
+	return false;
 }
 
 // 商品下一页事件
@@ -152,18 +209,32 @@ function pNextEvent() {
 		pNowPage++;
 		pPager(data, pNowPage);
 
-		$("#page-tag").text((pNowPage + 1) + "/" + pPageCount);
+		$("#page-tag").text("第" + (pNowPage + 1) + "/" + pPageCount + "页        总商品数：" + data.length);
 	} else {
-		return false;
 	}
+	return false;
 }
 
 // 商品翻页实现
 function pPager(data, nowPage) {
 	// JSON变为列表显示
 	for (var i = nowPage * 20; i < data.length && i < (nowPage * 20 + 20); i++) {
-		
-		var item = $('<li class="product">'+
+		// 用a标签记录位置
+		var item = $('<a href="'+ i +'" class="list-group-item pro-item">'+
+			'<div class="row">'+
+			  '<div class="col-xs-4 col-sm-4">'+
+			    '<img src="' + data[i].img + '" class="img-rounded img-responsive"  style="max-height: 150px;" alt="">'+
+			  '</div>'+
+			  '<div class="col-xs-8 col-sm-8">'+
+			    '<h3 class="productTitle list-group-item-heading">'+ data[i].name +
+			      '<br/><small>'+ data[i].resume +'</small>'+
+			    '</h3>'+
+			    '<p class="proSell-price list-group-item-text">' + data[i].price + '</p>'+
+			  '</div>'+
+			'</div>'+
+			'</a>');
+
+		/*var item = $('<li class="product">'+
 			'<div class="productItem clearfix">'+
 				'<a class="productImg" href="' + data[i].page + '">'+
 					'<img src="' + data[i].img + '" alt="">'+
@@ -180,13 +251,13 @@ function pPager(data, nowPage) {
 
 			'<div class="productComment">'+
 				'<ul class="commentTab clearfix">'+
-					'<li><a href="getcomments?clueid=' + data[i].commentClueid + '">推荐评论</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=屏幕&clueid=' + data[i].commentClueid + '">屏幕</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=像素&clueid=' + data[i].commentClueid + '">像素</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=内存&clueid=' + data[i].commentClueid + '">内存</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=速度&clueid=' + data[i].commentClueid + '">速度</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=CPU&clueid=' + data[i].commentClueid + '">CPU</a></li>'+
-	              	'<li><a href="getKeywordComments?kw=物流&clueid=' + data[i].commentClueid + '">物流</a></li>'+
+					'<li><a href="getcomments?clueid=' + data[i].id + '">推荐评论</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=屏幕&clueid=' + data[i].id + '">屏幕</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=像素&clueid=' + data[i].id + '">像素</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=内存&clueid=' + data[i].id + '">内存</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=速度&clueid=' + data[i].id + '">速度</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=CPU&clueid=' + data[i].id + '">CPU</a></li>'+
+	              	'<li><a href="getKeywordComments?kw=物流&clueid=' + data[i].id + '">物流</a></li>'+
 	            '</ul>'+
 	            '<div class="comment-list">'+
 	            	'<ul class="pager">'+
@@ -196,7 +267,7 @@ function pPager(data, nowPage) {
 	            	'<ul id="cList"></ul>'+
 	            '</div>'+
 	        '</div>'+
-		'</li>');
+		'</li>');*/
 			
 			
 			
@@ -209,14 +280,16 @@ function pPager(data, nowPage) {
 //				+ (data[i].commentCount - data[i].waterCount) + '/'
 //				+ (data[i].commentCount - 0) + ')</a>'
 //				+ '<ul class="comment-list"></ul>' + '</a>' + '</li>');
-		if (data[i].commentCount != null) {
+		/*if (data[i].commentCount != null) {
 			item.css("background-color", "rgb(145, 218, 173)");
-		}
+		}*/
 		$("#product-list").append(item);
+		
 	}
+	$(".pro-item").click(detailEvent);
 
 	// 添加事件
-	$(".commentTab a").toggle(getCommentEvent, function(){
+	$(".cTab a").toggle(getCommentEvent, function(){
 		var commentList = $(this).parents(".commentTab").next(".comment-list");
 		if (commentList.is(":hidden")) {
 			getCommentEvent();
@@ -233,11 +306,6 @@ function loadPItem(json) {
 	pPageCount = Math.ceil(data.length / 20);
 	pPager(data, pNowPage);
 
-	$("#page-tag").text((pNowPage + 1) + "/" + pPageCount);
-	
-	//4. 商品上一页
-	$("#pre").click(pPreEvent);
-	
-	//5. 商品下一页
-	$("#next").click(pNextEvent);
+	$("#page-tag").text("第" + (pNowPage + 1) + "/" + pPageCount + "页        总商品数：" + data.length);
+
 }

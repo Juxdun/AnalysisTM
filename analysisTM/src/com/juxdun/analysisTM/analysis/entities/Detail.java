@@ -15,10 +15,48 @@ public class Detail {
 	/**
 	 * 描述
 	 */
-	private String detail;
+	private String resume;
+
+	/**
+	 * 月售量
+	 */
+	private String monSaleVol;
 	
 	/**
-	 * 价格
+	 * 累计评论
 	 */
-	private String price;
+	private String cumuComment;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getResume() {
+		return resume;
+	}
+
+	public void setResume(String resume) {
+		this.resume = resume;
+	}
+
+	public String getMonSaleVol() {
+		return monSaleVol;
+	}
+
+	public void setMonSaleVol(String monSaleVol) {
+		this.monSaleVol = monSaleVol;
+	}
+
+	public String getCumuComment() {
+		return cumuComment;
+	}
+
+	public void setCumuComment(String cumuComment) {
+		this.cumuComment = cumuComment;
+	}
+	
 }

@@ -16,16 +16,53 @@ import com.thoughtworks.xstream.XStream;
 @Component
 public class XSteamUtil {
 
+	public static int BATCH = 10;
+	
 	File pathBrand = new File(
-			"C:/Users/Juxdun/DataScraperWorks/Ju_TM_PHONE_category");
+			"C:/Users/Juxdun/DataScraperWorks/LL_TM_brand");
 	File pathProduct = new File(
-			"C:/Users/Juxdun/DataScraperWorks/Ju_TM_PHONE_list");
+			"C:/Users/Juxdun/DataScraperWorks/LL_TM_product");
 	File pathDetail = new File(
-			"C:/Users/Juxdun/DataScraperWorks/Ju_TM_PHONE_detail");
+			"C:/Users/Juxdun/DataScraperWorks/LL_TM_detail");
 	File pathComment = new File(
-			"C:/Users/Juxdun/DataScraperWorks/Ju_TM_PHONE_comment");
+			"C:/Users/Juxdun/DataScraperWorks/LL_TM_comment");
+//	File pathComment = new File(
+//			"C:/Users/Juxdun/DataScraperWorks/test_LL_TM_comment");
 	public static String XMLsuffix = ".xml";
 	
+	/**
+	 * 直接把数据读到数据库
+	 * @param onDb 每读一个文件执行一次这方法
+	 */
+	public void brandsToDb(OnInsertDB onDb){
+		XStream xstream = new XStream();
+		aliasXSteam(xstream, XSteamAliasMethod.AsBrand);
+		readBrands2DB(xstream, pathBrand, onDb);
+	}
+
+	/**
+	 * 递归遍历目录取品牌Brand并存进数据库
+	 * @param file XML所在目录
+	 * @param list 容器
+	 * @param onDb 分段插入数据库回调
+	 */
+	private void readBrands2DB(XStream xstream, File file, OnInsertDB onDb) {
+		if (file.isDirectory()) {
+			// 如果是目录，递归遍历目录
+			File[] tempFiles = file.listFiles();
+			
+			for (int i = 0; i < tempFiles.length; i++) {
+				readBrands2DB(xstream, tempFiles[i], onDb);
+			}
+		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
+			// 如果是文件，XML转换Object
+			Extraction ex = (Extraction) xstream.fromXML(file);
+			List<Brand> tempList = (List<Brand>) ex.getList();
+			// 调用外部存进数据库方法
+			onDb.onInsert(tempList);
+		}
+	}
+
 	/**
 	 * 拿到品牌列表
 	 * @return
@@ -54,12 +91,44 @@ public class XSteamUtil {
 		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
 			// 如果是文件，XML转换Object
 			Extraction ex = (Extraction) xstream.fromXML(file);
-			List<Brand> tempList = ex.getList();
+			List<Brand> tempList = (List<Brand>) ex.getList();
 			
 			list.addAll(tempList);
 		}
 	}
 
+	/**
+	 * 直接把数据读到数据库
+	 * @param onDb 每读一个文件执行一次这方法
+	 */
+	public void prooductsToDb(OnInsertDB onDb){
+		XStream xstream = new XStream();
+		aliasXSteam(xstream, XSteamAliasMethod.AsProduct);
+		readProducts2DB(xstream, pathProduct, onDb);
+	}
+
+	/**
+	 * 递归遍历目录取商品Product并存进数据库
+	 * @param file XML所在目录
+	 * @param list 容器
+	 * @param onDb 分段插入数据库回调
+	 */
+	private void readProducts2DB(XStream xstream, File file, OnInsertDB onDb) {
+		if (file.isDirectory()) {
+			// 如果是目录，递归遍历目录
+			File[] tempFiles = file.listFiles();
+			
+			for (int i = 0; i < tempFiles.length; i++) {
+				readProducts2DB(xstream, tempFiles[i], onDb);
+			}
+		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
+			// 如果是文件，XML转换Object
+			Extraction ex = (Extraction) xstream.fromXML(file);
+			List<Product> tempList = (List<Product>) ex.getList();
+			// 调用外部存进数据库方法
+			onDb.onInsert(tempList);
+		}
+	}
 	/**
 	 * 拿到产品列表
 	 * @return
@@ -88,12 +157,12 @@ public class XSteamUtil {
 		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
 			// 如果是文件，XML转换Object
 			Extraction ex = (Extraction) xstream.fromXML(file);
-			List<Product> tempList = ex.getList();
+			List<Product> tempList = (List<Product>) ex.getList();
 			// 设置ClueId
-			for (Product p : tempList) {
+			/*for (Product p : tempList) {
 				p.setClueid(ex.getClueid());
 				p.setFullpath(ex.getFullpath());
-			}
+			}*/
 			list.addAll(tempList);
 		}
 	}
@@ -122,6 +191,67 @@ public class XSteamUtil {
 			list.addAll(tempList);
 		}
 	}*/
+	
+	/**
+	 * 直接把数据读到数据库
+	 * @param onDb 每读一个文件执行一次这方法
+	 */
+	public void detailsToDb(OnInsertDB onDb){
+		XStream xstream = new XStream();
+		aliasXSteam(xstream, XSteamAliasMethod.AsDetail);
+		readProducts2DB(xstream, pathDetail, onDb);
+	}
+
+	private void readDetails2DB(XStream xstream, File file, OnInsertDB onDb) {
+		if (file.isDirectory()) {
+			File[] tempFiles = file.listFiles();
+			
+			for (int i = 0; i < tempFiles.length; i++) {
+				readDetails2DB(xstream, tempFiles[i], onDb);
+			}
+		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
+			Extraction ex = (Extraction) xstream.fromXML(file);
+			List<Detail> tempList = (List<Detail>) ex.getList();
+			
+			onDb.onInsert(tempList);
+		}
+	}
+	
+	/**
+	 * 直接把数据读到数据库
+	 * @param onDb 每读一个文件执行一次这方法
+	 */
+	public void commentsToDb(OnInsertDB onDb){
+		XStream xstream = new XStream();
+		aliasXSteam(xstream, XSteamAliasMethod.AsComment);
+		readComments2DB(xstream, pathComment, onDb);
+	}
+
+	/**
+	 * 递归遍历目录取评论Comment并存进数据库
+	 * @param file XML所在目录
+	 * @param list 容器
+	 * @param onDb 分段插入数据库回调
+	 */
+	private void readComments2DB(XStream xstream, File file, OnInsertDB onDb) {
+		if (file.isDirectory()) {
+			// 如果是目录，递归遍历目录
+			File[] tempFiles = file.listFiles();
+			
+			for (int i = 0; i < tempFiles.length; i++) {
+				readComments2DB(xstream, tempFiles[i], onDb);
+			}
+		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
+			// 如果是文件，XML转换Object
+			Extraction ex = (Extraction) xstream.fromXML(file);
+			List<Comment> tempList = (List<Comment>) ex.getList();
+			for (Comment comment : tempList) {
+				comment.setBaseURI(ex.getBaseURI().getBucketBaseURI().getUri());
+			}
+			// 调用外部存进数据库方法
+			onDb.onInsert(tempList);
+		}
+	}
 	
 	/**
 	 * 从xml文件取评论列表
@@ -157,10 +287,10 @@ public class XSteamUtil {
 		} else if (file.isFile() && file.getName().endsWith(XMLsuffix)) {
 			// 如果是文件，XML转换Object
 			Extraction ex = (Extraction) xstream.fromXML(file);
-			List<Comment> tempList = ex.getList();
+			List<Comment> tempList = (List<Comment>) ex.getList();
 			// 设置ClueId
 			for (Comment comment : tempList) {
-				comment.setClueid(ex.getClueid());
+//				comment.setClueid(ex.getClueid());
 				comment.setBaseURI(ex.getBaseURI().getBucketBaseURI().getUri());
 			}
 			list.addAll(tempList);
@@ -178,7 +308,7 @@ public class XSteamUtil {
 		switch (method) {
 		case AsBrand:
 			//				xml标签名		映射类		映射属性
-			xstream.aliasField("brands", Extraction.class, "list");
+			xstream.aliasField("brandlist", Extraction.class, "list");
 			
 			xstream.alias("item", Brand.class);
 			xstream.aliasField("name", Brand.class, "name");
@@ -189,28 +319,30 @@ public class XSteamUtil {
 			xstream.aliasField("products", Extraction.class, "list");
 			
 			xstream.alias("item", Product.class);
-			xstream.aliasField("商品名", Product.class, "name");
-			xstream.aliasField("价格", Product.class, "price");
-			xstream.aliasField("page", Product.class, "page");
+			xstream.aliasField("name", Product.class, "name");
+			xstream.aliasField("resume", Product.class, "resume");
+			xstream.aliasField("price", Product.class, "price");
 			xstream.aliasField("img", Product.class, "img");
-			xstream.aliasField("商家名", Product.class, "shopName");
-			xstream.aliasField("商家page", Product.class, "shopUrl");
+			xstream.aliasField("monTradeVol", Product.class, "monTradeVol");
+			xstream.aliasField("page", Product.class, "page");
 			break;
 		case AsDetail:
-			xstream.aliasField("detail", Extraction.class, "list");
+			xstream.aliasField("details", Extraction.class, "list");
 			
 			xstream.alias("item", Detail.class);
-			xstream.aliasField("商品名", Detail.class, "name");
-			xstream.aliasField("商品描述", Detail.class, "detail");
-			xstream.aliasField("价格", Detail.class, "price");
+			xstream.aliasField("name", Detail.class, "name");
+			xstream.aliasField("resume", Detail.class, "resume");
+			xstream.aliasField("monSaleVol", Detail.class, "monSaleVol");
+			xstream.aliasField("cumuComment", Detail.class, "cumuComment");
 			break;
 		case AsComment:
-			xstream.aliasField("commets", Extraction.class, "list");
+			xstream.aliasField("comments", Extraction.class, "list");
 
 			xstream.alias("item", Comment.class);
-			xstream.aliasField("内容", Comment.class, "content");
-			xstream.aliasField("日期", Comment.class, "date");
-			xstream.aliasField("评论人", Comment.class, "person");
+			xstream.aliasField("content", Comment.class, "content");
+			xstream.aliasField("append", Comment.class, "append");
+			xstream.aliasField("date", Comment.class, "date");
+			xstream.aliasField("person", Comment.class, "person");
 			break;
 
 		default:
@@ -249,5 +381,8 @@ public class XSteamUtil {
 			list.add(ex);
 		}
 	}
-	
+
+	public interface OnInsertDB{
+		void onInsert(List<?> list);
+	}
 }

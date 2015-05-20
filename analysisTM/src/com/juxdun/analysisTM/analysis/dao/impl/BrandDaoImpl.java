@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juxdun.analysisTM.analysis.dao.BrandDao;
 import com.juxdun.analysisTM.analysis.entities.Brand;
@@ -26,8 +27,8 @@ public class BrandDaoImpl implements BrandDao {
 	
 	@Override
 	public void batchInsertBrands(final List<Brand> brands) {
-		String sql = "INSERT tm_brands(NAME, PAGE, IMG) values(?,?,?)";
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+		String sql = "INSERT tm_brands(name, page, img) values(?,?,?)";
+		int[] retVals = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
@@ -42,8 +43,27 @@ public class BrandDaoImpl implements BrandDao {
 				return brands.size();
 			}
 		});
+		
+		for(int i = 0; i < retVals.length; i++){
+			if(retVals[i] < 0)
+				System.out.println("处理第" + (i + 1) + "条记录失败");
+		}
+
 	}
 	
+	@Override
+	public void updateP_Count() {
+		String sql = "UPDATE tm_brands AS b INNER JOIN " +
+						"(SELECT COUNT(brand_id) AS a,brand_id "+
+						"FROM tm_products " +
+						"GROUP BY brand_id " +
+						"HAVING brand_id IS NOT NULL) AS c " +
+						"ON b.id = c.brand_id " +
+						"SET p_count = a";
+		jdbcTemplate.update(sql);
+		
+	}
+
 	public List<Brand> getAllBrands() {
 		String sql = "SELECT * FROM `tm_brands`";
 		RowMapper<Brand> rowMapper = new BeanPropertyRowMapper<>(Brand.class);

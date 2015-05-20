@@ -26,21 +26,17 @@ public class ProductDaoImpl implements ProductDao{
 	
 	@Override
 	public void batchInsertProducts(final List<Product> products) {
-		String sql = "INSERT `tm_products`(clueid, fullpath, name, price, page, img, shop_name, shop_url) values(?,?,?,?,?,?,?,?)";
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+		String sql = "INSERT tm_products(name, resume, price, page, img) values(?,?,?,?,?)";
+		int[] retVals = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
 				Product c = products.get(index);
-//				ps.setString(1, c.getClueid());
-				ps.setInt(1, c.getClueid());
-				ps.setString(2, c.getFullpath());
-				ps.setString(3, c.getName());
-				ps.setString(4, c.getPrice());
-				ps.setString(5, c.getPage());
-				ps.setString(6, c.getImg());
-				ps.setString(7, c.getShopName());
-				ps.setString(8, c.getShopUrl());
+				ps.setString(1, c.getName());
+				ps.setString(2, c.getResume());
+				ps.setString(3, c.getPrice());
+				ps.setString(4, c.getPage());
+				ps.setString(5, c.getImg());
 			}
 			
 			@Override
@@ -49,6 +45,42 @@ public class ProductDaoImpl implements ProductDao{
 			}
 		});
 		
+		for(int i = 0; i < retVals.length; i++){
+			if(retVals[i] < 0)
+				System.out.println("处理第" + (i + 1) + "条记录失败");
+		}
+	}
+
+	@Override
+	public void updateBrandId() {
+		String sql = "UPDATE tm_products AS p " +
+						"RIGHT JOIN tm_brands AS b " +
+						"ON p.`name` LIKE CONCAT('%',b.name,'%') "+
+						"SET p.brand_id = b.id";
+		jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public void updateCommentCount() {
+		String sql = "UPDATE tm_products AS p "
+				+ "INNER JOIN "
+				+ "(SELECT product_id, COUNT(1) AS cou "
+				+ "FROM tm_comments WHERE product_id IS NOT NULL " 
+				+ "GROUP BY product_id) AS c "
+				+ "ON p.id = c.product_id "
+				+ "SET p.comment_count=c.cou";
+		jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public void updateWaterCount() {
+		String sql = "UPDATE tm_products AS p "
+				+ "INNER JOIN (SELECT product_id, COUNT(1) AS cou FROM tm_comments "
+				+ "WHERE product_id IS NOT NULL AND is_waterarmy=1 "
+				+ "GROUP BY product_id) AS c "
+				+ "ON p.id = c.product_id "
+				+ "SET p.water_count=c.cou";
+		jdbcTemplate.update(sql);
 	}
 
 	@Override
@@ -82,17 +114,17 @@ public class ProductDaoImpl implements ProductDao{
 		}
 
 	@Override
-	public List<Product> getProductsByProductClueid(Integer productClueid) {
-		String sql = "SELECT * FROM `tm_products` WHERE clueid = ? ORDER BY comment_count DESC";
+	public List<Product> getProductsByBrandId(Integer brandId) {
+		String sql = "SELECT * FROM tm_products WHERE brand_id = ? ORDER BY comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
-		List<Product> list = jdbcTemplate.query(sql, rowMapper, productClueid);
+		List<Product> list = jdbcTemplate.query(sql, rowMapper, brandId);
 		
 		return list;
 	}
 
 	@Override
 	public List<Product> getAllProducts() {
-		String sql = "SELECT * FROM `tm_products` ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products ORDER BY comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper);
 		
@@ -100,12 +132,30 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
+	public List<Product> getProductsForPage(Integer page, Integer pageSize) {
+		if (page - 1 < 0) {
+			return null;
+		}
+		String sql = "SELECT * FROM tm_products LIMIT ?, ? ORDER BY comment_count DESC";
+		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
+		List<Product> list = jdbcTemplate.query(sql, rowMapper, page - 1, pageSize);
+		
+		return list;
+	}
+
+	@Override
 	public List<Product> searchProduct(String wd) {
-		String sql = "SELECT * FROM `tm_products` WHERE NAME LIKE ? ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE NAME LIKE ? ORDER BY comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, "%"+wd+"%");
 		
 		return list;
+	}
+
+	@Override
+	public Product getProductById(Integer productId) {
+		
+		return null;
 	}
 
 

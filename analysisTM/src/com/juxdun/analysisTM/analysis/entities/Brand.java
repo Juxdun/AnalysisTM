@@ -6,21 +6,19 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Brand {
-	
+
 	private Integer id;
-	
-	private Integer productClueid;
 
 	/**
 	 * 名
 	 */
 	private String name;
-	
+
 	/**
 	 * 链接
 	 */
 	private String page;
-	
+
 	/**
 	 * 图片链接
 	 */
@@ -32,14 +30,6 @@ public class Brand {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getProductClueid() {
-		return productClueid;
-	}
-
-	public void setProductClueid(Integer productClueid) {
-		this.productClueid = productClueid;
 	}
 
 	public void setPage(String page) {

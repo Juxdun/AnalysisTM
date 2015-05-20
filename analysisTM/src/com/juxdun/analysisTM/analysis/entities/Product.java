@@ -6,9 +6,8 @@ package com.juxdun.analysisTM.analysis.entities;
  *
  */
 public class Product {
-	private int id;
-	private Integer clueid;
-	private String fullpath;
+	
+	private Integer id;
 
 	/**
 	 * 商品名
@@ -16,14 +15,14 @@ public class Product {
 	private String name;
 	
 	/**
+	 * 描述
+	 */
+	private String resume;
+	
+	/**
 	 * 价格
 	 */
 	private String price;
-	
-	/**
-	 * 原链接
-	 */
-	private String page;
 	
 	/**
 	 * 图片链接
@@ -31,14 +30,14 @@ public class Product {
 	private String img;
 	
 	/**
-	 * 商店名
+	 * 月成交量
 	 */
-	private String shopName;
+	private String monTradeVol;
 	
 	/**
-	 * 商店链接
+	 * 原链接
 	 */
-	private String shopUrl;
+	private String page;
 	
 	private Integer star;
 	
@@ -46,30 +45,12 @@ public class Product {
 	
 	private Integer waterCount;
 	
-	private Integer commentClueid;
-
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Integer getClueid() {
-		return clueid;
-	}
-
-	public void setClueid(Integer clueid) {
-		this.clueid = clueid;
-	}
-
-	public String getFullpath() {
-		return fullpath;
-	}
-
-	public void setFullpath(String fullpath) {
-		this.fullpath = fullpath;
 	}
 
 	public String getName() {
@@ -88,14 +69,6 @@ public class Product {
 		return img;
 	}
 
-	public String getShopName() {
-		return shopName;
-	}
-
-	public String getShopUrl() {
-		return shopUrl;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -110,14 +83,6 @@ public class Product {
 
 	public void setImg(String img) {
 		this.img = img;
-	}
-
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-
-	public void setShopUrl(String shopUrl) {
-		this.shopUrl = shopUrl;
 	}
 
 	public Integer getStar() {
@@ -144,12 +109,24 @@ public class Product {
 		this.waterCount = waterCount;
 	}
 
-	public Integer getCommentClueid() {
-		return commentClueid;
+	public String getResume() {
+		return resume;
 	}
 
-	public void setCommentClueid(Integer commentClueid) {
-		this.commentClueid = commentClueid;
+	public void setResume(String resume) {
+		this.resume = resume;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getMonTradeVol() {
+		return monTradeVol;
+	}
+
+	public void setMonTradeVol(String monTradeVol) {
+		this.monTradeVol = monTradeVol;
 	}
 
 	@Override

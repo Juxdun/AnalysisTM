@@ -13,6 +13,8 @@ public interface CommentDao {
 	void batchInsertComments(List<Comment> comments);
 //	void batchInsertComments(List<Object[]> batchArgs);
 	
+	void updateProductId();
+	
 	/**
 	 * 标记水军评论
 	 */
@@ -26,10 +28,19 @@ public interface CommentDao {
 	
 	/**
 	 * 取评论
-	 * @param product 根据商品
+	 * @param productId 根据商品
 	 * @return 列表
 	 */
-	List<Comment> getCommentsByClueid(Integer clueid);
+	List<Comment> getCommentsByProductId(Integer productId);
+	
+	/**
+	 * 分页取评论
+	 * @param productId 商品id
+	 * @param page 第几页
+	 * @param pageSize 每一页数量
+	 * @return 列表
+	 */
+	List<Comment> getCommentsByProductIdForPage(Integer productId, Integer page, Integer pageSize);
 	
 	/**
 	 * 关键字取评论
@@ -57,5 +68,13 @@ public interface CommentDao {
 	 * @return 列表
 	 */
 	List<Comment> getWaComments();
+	
+	/**
+	 * 分页取水军评论
+	 * @param page 第几页
+	 * @param pageSize 每一页数量
+	 * @return 列表
+	 */
+	List<Comment> getWaCommentsForPage(Integer page, Integer pageSize);
 
 }
