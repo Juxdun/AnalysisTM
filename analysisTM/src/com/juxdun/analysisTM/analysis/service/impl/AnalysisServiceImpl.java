@@ -14,6 +14,7 @@ import com.juxdun.analysisTM.analysis.entities.Detail;
 import com.juxdun.analysisTM.analysis.entities.Product;
 import com.juxdun.analysisTM.analysis.service.AnalysisService;
 import com.juxdun.analysisTM.analysis.util.XSteamUtil;
+import com.juxdun.analysisTM.analysis.util.XSteamUtil.OnInsertDB;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
@@ -46,7 +47,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 //		commentDao.signWaterArmy();
 //		productDao.updateProductTable();
 //		brandDao.updateBrandTable();
-		commentDao.analyseLevel();
+//		commentDao.analyseLevel();
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public List<Comment> getWaComments() {
-		return commentDao.getWaComments();
+		return commentDao.getWaCommentsForPage(1, 100);
 	}
 
 	@Override
@@ -104,6 +105,106 @@ public class AnalysisServiceImpl implements AnalysisService {
 	@Override
 	public Product getProductById(Integer productId) {
 		return productDao.getProductById(productId);
+	}
+
+	@Override
+	public Boolean updateProductInfo(Integer id, String name, String resume,
+			String price, String img, Integer star) {
+		return productDao.updateProductInfo(id, name, resume, price, img, star);
+	}
+
+	@Override
+	public Boolean insertBrands() {
+		List<Brand> brands = xSteamUtil.getBrands();
+		brandDao.batchInsertBrands(brands);
+		return true;
+	}
+
+	@Override
+	public Boolean insertProducts() {
+		// 使用读一个文件调用一次插入方法。
+		xSteamUtil.prooductsToDb(new OnInsertDB() {
+			@Override
+			public void onInsert(List<?> list) {
+				productDao.batchInsertProducts((List<Product>) list);
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public Boolean insertComments() {
+		xSteamUtil.commentsToDb(new OnInsertDB() {
+			@Override
+			public void onInsert(List<?> list) {
+				commentDao.batchInsertComments((List<Comment>) list);
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public Boolean linkB2P() {
+		return productDao.updateBrandId();
+	}
+
+	@Override
+	public Boolean linkP2C() {
+		return commentDao.updateProductId();
+	}
+
+	@Override
+	public Boolean insertAndLink() {
+		this.insertBrands();
+		this.insertProducts();
+		this.insertComments();
+		this.linkB2P();
+		this.linkP2C();
+		return true;
+	}
+
+	@Override
+	public Boolean signWater() {
+		return commentDao.signWaterArmy();
+	}
+
+	@Override
+	public Boolean analysePositive() {
+		return commentDao.analysePositive();
+	}
+
+	@Override
+	public Boolean analyseNegative() {
+		return commentDao.analyseNegative();
+	}
+
+	@Override
+	public Boolean countWater() {
+		return productDao.countWater();
+	}
+
+	@Override
+	public Boolean countGood() {
+		return productDao.countGood();
+	}
+
+	@Override
+	public Boolean countBad() {
+		return productDao.countBad();
+	}
+
+	@Override
+	public Boolean analyseAndCount() {
+		this.countComment();
+		this.countWater();
+		this.countGood();
+		this.countBad();
+		return true;
+	}
+
+	@Override
+	public Boolean countComment() {
+		return productDao.countComment();
 	}
 
 }

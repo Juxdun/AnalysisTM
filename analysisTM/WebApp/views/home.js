@@ -20,6 +20,9 @@ var cData = null,
 	cNowPage = 0,
 	cPageCount = 0;
 
+// 当前Product的位置id
+var nowProId = null;
+
 //-----------------  home.jsp文档准备好后  ---------------------------
 $(function() {
 	//1. 文档准备好，加载全部的product
@@ -43,10 +46,18 @@ $(function() {
 
 function detailEvent() {
 
-	var url = this.href;
-	
 	$("#detailmodal").modal();
 	
+	nowProId = $(this).attr("id");
+	var pro = data[nowProId];
+	
+	$("#myModalLabel").text(pro.name);
+	$("#modalImg").attr("src", pro.img);
+	$("#modalPage").attr("href", pro.page);
+	$("#modalResume").text(pro.resume);
+	$("#modalPrice").text(pro.price);
+	
+	// 调用highcharts.js的饼状图
 	$('#myChart').highcharts({
         chart: {
             plotBackgroundColor: null,
@@ -57,7 +68,7 @@ function detailEvent() {
             text: '好评度分布情况：'
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name}: <b>{point.y}</b>'
         },
         plotOptions: {
             pie: {
@@ -74,17 +85,16 @@ function detailEvent() {
         },
         series: [{
             type: 'pie',
-            name: '度',
+            name: '数量',
             data: [
-                ['好评',   45.0],
-                ['差评',   26.8],
+                ['好评', pro.goodCount],
+                ['差评', pro.badCount],
                 {
                     name: '水军',
-                    y: 12.8,
+                    y: pro.waterCount,
                     sliced: true,
                     selected: true
                 }
-
             ]
         }]
     });
@@ -220,7 +230,7 @@ function pPager(data, nowPage) {
 	// JSON变为列表显示
 	for (var i = nowPage * 20; i < data.length && i < (nowPage * 20 + 20); i++) {
 		// 用a标签记录位置
-		var item = $('<a href="'+ i +'" class="list-group-item pro-item">'+
+		var item = $('<a id="'+ i +'" href="'+ i +'" class="list-group-item pro-item">'+
 			'<div class="row">'+
 			  '<div class="col-xs-4 col-sm-4">'+
 			    '<img src="' + data[i].img + '" class="img-rounded img-responsive"  style="max-height: 150px;" alt="">'+
@@ -230,6 +240,9 @@ function pPager(data, nowPage) {
 			      '<br/><small>'+ data[i].resume +'</small>'+
 			    '</h3>'+
 			    '<p class="proSell-price list-group-item-text">' + data[i].price + '</p>'+
+			    '<p>star<span class="label label-info">' + data[i].star + '</span>'+
+			    '评论总数<span class="label label-info">' + data[i].commentCount + '</span>'+
+			    '水军评论<span class="label label-info">' + data[i].waterCount + '</span></p>'+
 			  '</div>'+
 			'</div>'+
 			'</a>');
@@ -287,7 +300,7 @@ function pPager(data, nowPage) {
 		
 	}
 	$(".pro-item").click(detailEvent);
-
+/*
 	// 添加事件
 	$(".cTab a").toggle(getCommentEvent, function(){
 		var commentList = $(this).parents(".commentTab").next(".comment-list");
@@ -296,7 +309,7 @@ function pPager(data, nowPage) {
 		} else {
 			commentList.slideUp();
 		}
-	});
+	});*/
 }
 
 // 用JSON组装product-item

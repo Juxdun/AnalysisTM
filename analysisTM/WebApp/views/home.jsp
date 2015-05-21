@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="views/home.css">
-<title>首页</title>
+<title>智能电子商务数据分析网</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/highcharts.js"></script>
@@ -91,7 +91,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">未指定</h4>
+        <h3 class="modal-title" id="myModalLabel">未指定商品名</h3>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -99,17 +99,20 @@
             <div id="myChart"></div>
           </div>
           <div class="col-sm-4">
-            我依然爱你，都无法不去想你，都时时刻刻都在回忆过去，你是否也一样，一样都去那的影子，都是你
+            <img id="modalImg" src="" class="img-rounded img-responsive">
+            <h5 id="modalResume"></h5>
+            <p id="modalPrice" class="proSell-price"></p>
+            <a id="modalPage" class="btn btn-primary" href="#" target="_blank">去天猫</a>
           </div>
         </div>
         
 <div role="tabpanel">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab">推荐评论</a></li>
-    <li role="presentation"><a href="#a" aria-controls="profile" role="tab" data-toggle="tab">屏幕</a></li>
-    <li role="presentation"><a href="#b" aria-controls="messages" role="tab" data-toggle="tab">像素</a></li>
-    <li role="presentation"><a href="#c" aria-controls="settings" role="tab" data-toggle="tab">内存</a></li>
+    <li role="presentation" class="active"><a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab">推荐评论 <span class="badge">42</span></a></li>
+    <li role="presentation"><a href="#a" aria-controls="profile" role="tab" data-toggle="tab">屏幕  <span class="badge">2</span></a></li>
+    <li role="presentation"><a href="#b" aria-controls="messages" role="tab" data-toggle="tab">像素 <span class="badge">12</span></a></li>
+    <li role="presentation"><a href="#c" aria-controls="settings" role="tab" data-toggle="tab">内存 <span class="badge">2</span></a></li>
   </ul>
 
   <!-- Tab panes -->

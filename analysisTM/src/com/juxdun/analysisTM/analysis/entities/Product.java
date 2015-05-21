@@ -45,6 +45,26 @@ public class Product {
 	
 	private Integer waterCount;
 	
+	private Integer goodCount;
+	
+	private Integer badCount;
+
+	public Integer getGoodCount() {
+		return goodCount;
+	}
+
+	public void setGoodCount(Integer goodCount) {
+		this.goodCount = goodCount;
+	}
+
+	public Integer getBadCount() {
+		return badCount;
+	}
+
+	public void setBadCount(Integer badCount) {
+		this.badCount = badCount;
+	}
+
 	public int getId() {
 		return id;
 	}

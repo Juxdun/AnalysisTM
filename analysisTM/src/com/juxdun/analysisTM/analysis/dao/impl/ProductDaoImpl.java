@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.jdbc.Sql;
 
 import com.juxdun.analysisTM.analysis.dao.ProductDao;
 import com.juxdun.analysisTM.analysis.entities.Product;
@@ -52,16 +53,17 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public void updateBrandId() {
+	public Boolean updateBrandId() {
 		String sql = "UPDATE tm_products AS p " +
 						"RIGHT JOIN tm_brands AS b " +
 						"ON p.`name` LIKE CONCAT('%',b.name,'%') "+
 						"SET p.brand_id = b.id";
-		jdbcTemplate.update(sql);
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
 	}
 
 	@Override
-	public void updateCommentCount() {
+	public Boolean countComment() {
 		String sql = "UPDATE tm_products AS p "
 				+ "INNER JOIN "
 				+ "(SELECT product_id, COUNT(1) AS cou "
@@ -69,18 +71,48 @@ public class ProductDaoImpl implements ProductDao{
 				+ "GROUP BY product_id) AS c "
 				+ "ON p.id = c.product_id "
 				+ "SET p.comment_count=c.cou";
-		jdbcTemplate.update(sql);
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
 	}
 
 	@Override
-	public void updateWaterCount() {
+	public Boolean countWater() {
 		String sql = "UPDATE tm_products AS p "
 				+ "INNER JOIN (SELECT product_id, COUNT(1) AS cou FROM tm_comments "
 				+ "WHERE product_id IS NOT NULL AND is_waterarmy=1 "
 				+ "GROUP BY product_id) AS c "
 				+ "ON p.id = c.product_id "
 				+ "SET p.water_count=c.cou";
-		jdbcTemplate.update(sql);
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
+	}
+
+	@Override
+	public Boolean countGood() {
+		String sql = "UPDATE tm_products AS p "
+				+ "INNER JOIN ( "
+				+ "SELECT product_id, COUNT(*) AS cou "
+				+ "FROM tm_comments "
+				+ "WHERE positive_level - negative_level >= 0 AND is_waterarmy = 0 "
+				+ "GROUP BY product_id "
+				+ ") AS c ON p.id = c.product_id "
+				+ "SET p.good_count = c.cou";
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
+	}
+
+	@Override
+	public Boolean countBad() {
+		String sql = "UPDATE tm_products AS p "
+				+ "INNER JOIN ( "
+				+ "SELECT product_id, COUNT(1) AS cou "
+				+ "FROM tm_comments "
+				+ "WHERE positive_level - negative_level < 0 AND is_waterarmy = 0 "
+				+ "GROUP BY product_id "
+				+ ") AS c ON p.id = c.product_id "
+				+ "SET p.bad_count = c.cou;";
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
 	}
 
 	@Override
@@ -115,7 +147,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> getProductsByBrandId(Integer brandId) {
-		String sql = "SELECT * FROM tm_products WHERE brand_id = ? ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE brand_id = ? ORDER BY star, comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, brandId);
 		
@@ -124,7 +156,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> getAllProducts() {
-		String sql = "SELECT * FROM tm_products ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE brand_id IS NOT NULL ORDER BY comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper);
 		
@@ -145,7 +177,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> searchProduct(String wd) {
-		String sql = "SELECT * FROM tm_products WHERE NAME LIKE ? ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE NAME LIKE ? AND brand_id IS NOT NULL ORDER BY comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, "%"+wd+"%");
 		
@@ -156,6 +188,13 @@ public class ProductDaoImpl implements ProductDao{
 	public Product getProductById(Integer productId) {
 		
 		return null;
+	}
+
+	@Override
+	public Boolean updateProductInfo(Integer id, String name, String resume,
+			String price, String img, Integer star) {
+		String sql = "UPDATE tm_products SET `name` =?, resume =?, price =?, img =?, star =? WHERE id =?";
+		return jdbcTemplate.update(sql, name, resume, price, img, star, id) >= 0 ? true : false;
 	}
 
 

@@ -68,4 +68,35 @@ public interface AnalysisService {
 
 	Product getProductById(Integer productId);
 
+	Boolean updateProductInfo(Integer id, String name, String resume,
+			String price, String img, Integer star);
+
+	Boolean insertBrands();
+
+	Boolean insertProducts();
+
+	Boolean insertComments();
+
+	Boolean linkB2P();
+
+	Boolean linkP2C();
+
+	Boolean insertAndLink();
+
+	Boolean signWater();
+
+	Boolean analysePositive();
+
+	Boolean analyseNegative();
+
+	Boolean countWater();
+
+	Boolean countGood();
+
+	Boolean countBad();
+
+	Boolean analyseAndCount();
+
+	Boolean countComment();
+
 }

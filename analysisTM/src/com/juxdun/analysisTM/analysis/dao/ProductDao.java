@@ -14,18 +14,20 @@ public interface ProductDao {
 	
 	/**
 	 * 更新外键字段brand_id
+	 * @return 
 	 */
-	void updateBrandId();
+	Boolean updateBrandId();
 	
 	/**
 	 * 更新字段comment_count
 	 */
-	void updateCommentCount();
+	Boolean countComment();
 	
 	/**
 	 * 更新字段water_count
+	 * @return 
 	 */
-	void updateWaterCount();
+	Boolean countWater();
 
 	/**
 	 * 向tm_products写入统计数据
@@ -63,5 +65,12 @@ public interface ProductDao {
 	List<Product> searchProduct(String wd);
 
 	Product getProductById(Integer productId);
+
+	Boolean updateProductInfo(Integer id, String name, String resume,
+			String price, String img, Integer star);
+
+	Boolean countGood();
+
+	Boolean countBad();
 	
 }

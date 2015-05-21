@@ -13,18 +13,29 @@ public interface CommentDao {
 	void batchInsertComments(List<Comment> comments);
 //	void batchInsertComments(List<Object[]> batchArgs);
 	
-	void updateProductId();
+	Boolean updateProductId();
 	
 	/**
 	 * 标记水军评论
+	 * @return 
 	 */
-	void signWaterArmy();
+	Boolean signWaterArmy();
 	
 	/**
 	 * 分析评论的好评度和差评度
 	 */
+	@Deprecated
 	void analyseLevel();
 	
+	/**
+	 * 分析计算好评度
+	 */
+	void analysePositveLevel();
+
+	/**
+	 * 分析计算差评度
+	 */
+	void analyseNegativeLevel();
 	
 	/**
 	 * 取评论
@@ -76,5 +87,9 @@ public interface CommentDao {
 	 * @return 列表
 	 */
 	List<Comment> getWaCommentsForPage(Integer page, Integer pageSize);
+
+	Boolean analysePositive();
+
+	Boolean analyseNegative();
 
 }

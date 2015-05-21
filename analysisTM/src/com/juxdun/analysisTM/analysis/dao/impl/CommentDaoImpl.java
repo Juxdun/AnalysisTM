@@ -1,6 +1,7 @@
 package com.juxdun.analysisTM.analysis.dao.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,8 +13,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ResourceUtils;
 
 import com.juxdun.analysisTM.analysis.dao.CommentDao;
+import com.juxdun.analysisTM.analysis.dao.NegativeDao;
+import com.juxdun.analysisTM.analysis.dao.PositiveDao;
 import com.juxdun.analysisTM.analysis.entities.Comment;
 import com.juxdun.analysisTM.analysis.util.ReadTxt;
 
@@ -26,6 +30,12 @@ public class CommentDaoImpl implements CommentDao {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	@Autowired
+	private NegativeDao negativeDao;
+	
+	@Autowired
+	private PositiveDao positiveDao;
 	
 	@Override
 	public void batchInsertComments(final List<Comment> comments) {
@@ -56,26 +66,58 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
-	public void updateProductId() {
+	public Boolean updateProductId() {
 		String sql = "UPDATE tm_comments AS c /"
 				+ "INNER JOIN tm_products AS p /"
 				+ "ON c.base_uri = CONCAT('http:',p.page) /"
 				+ "SET c.product_id = p.id;";
-		jdbcTemplate.update(sql);
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
 	}
 
 	@Override
-	public void signWaterArmy() {
+	public Boolean signWaterArmy() {
 		String sql = "UPDATE tm_comments SET is_waterarmy=1 "
 				+ "WHERE id IN ( SELECT a.id FROM( "
 				+ "SELECT t1.id FROM tm_comments AS t1,( "
 				+ "SELECT date,person FROM tm_comments "
 				+ "GROUP BY date, person HAVING COUNT(1)>2 ) AS t2 "
 				+ "WHERE t1.person=t2.person AND t1.date=t2.date )AS a)";
-		System.out.println(sql);
-		jdbcTemplate.update(sql);
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
 	}
 	
+	@Override
+	public Boolean analysePositive() {
+		String sql = "UPDATE tm_comments SET positive_level = 0; "
+				+ "UPDATE tm_comments AS a "
+				+ "INNER JOIN ("
+				+ "SELECT c.id, COUNT(c.id) AS cou "
+				+ "FROM tm_comments AS c INNER JOIN keyword_positive AS kp "
+				+ "ON c.content LIKE CONCAT('%', kp.keyword, '%') "
+				+ "AND c.is_waterarmy = 0 GROUP BY c.id ) "
+				+ "AS b "
+				+ "ON a.id = b.id "
+				+ "SET a.positive_level = b.cou;";
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
+	}
+
+	@Override
+	public Boolean analyseNegative() {
+		String sql = "UPDATE tm_comments SET negative_level=0;"
+				+ "UPDATE tm_comments AS a INNER JOIN ("
+				+ "SELECT c.id, COUNT(c.id) AS cou "
+				+ "FROM tm_comments AS c "
+				+ "INNER JOIN keyword_negative AS kp "
+				+ "ON c.content LIKE CONCAT('%',kp.keyword,'%') "
+				+ "AND c.is_waterarmy = 0 GROUP BY c.id) AS b "
+				+ "ON a.id = b.id "
+				+ "SET a.negative_level=b.cou;";
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
+	}
+
 	@Override
 	public void analyseLevel() {
 		// 初始化 positive_level 与 negative_level
@@ -83,28 +125,65 @@ public class CommentDaoImpl implements CommentDao {
 		
 		List<String> sqls = new ArrayList<String>();
 		// 差评度
-		File negativeFile = new File("D:\\Bussiniss analysis\\sentiment.dict.v1.0\\sentiment.dict.v1.0\\tsinghua.negative.gb.txt");
-		List<String> nList = ReadTxt.readTxtToList(negativeFile);
-		if (null != nList) {
-			for (String s : nList) {
-				sqls.add("UPDATE tm_comments SET negative_level = negative_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+		File negativeFile;
+		try {
+			negativeFile = ResourceUtils.getFile("classpath:tsinghua.negative.gb.txt");
+			List<String> nList = ReadTxt.readTxtToList(negativeFile);
+			if (null != nList) {
+				for (String s : nList) {
+					sqls.add("UPDATE tm_comments SET negative_level = negative_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+				}
 			}
+			
+			// 好评度
+			File positiveFile = ResourceUtils.getFile("classpath:tsinghua.positive.gb.txt");
+			nList = ReadTxt.readTxtToList(positiveFile);
+			if (null != nList) {
+				for (String s : nList) {
+					sqls.add("UPDATE tm_comments "
+							+ "SET positive_level = positive_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+				}
+			}
+			String[] sql = (String[])sqls.toArray(new String[sqls.size()]);
+			if (sql.length > 0) {
+				jdbcTemplate.batchUpdate(sql);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("没找到文件！检查classpath下是否存在那两个txt文件！tsinghua.negative.gb.txt和tsinghua.positive.gb.txt");
+			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public void analysePositveLevel() {
 		
 		// 好评度
-		File positiveFile = new File("D:\\Bussiniss analysis\\sentiment.dict.v1.0\\sentiment.dict.v1.0\\tsinghua.positive.gb.txt");
-		nList = ReadTxt.readTxtToList(positiveFile);
+		List<String> nList = positiveDao.read();
 		if (null != nList) {
+			// 初始化 positive_level
+			jdbcTemplate.update("UPDATE tm_comments SET positive_level = 0");
+			
 			for (String s : nList) {
-				sqls.add("UPDATE tm_comments /"
-						+ "SET positive_level = positive_level + (CHAR_LENGTH(CONTENT) - CHAR_LENGTH(REPLACE(CONTENT, '" + s + "', '')))/" + s.length() + "");
+				jdbcTemplate.update("UPDATE tm_comments "
+						+ "SET positive_level = (positive_level + 1) WHERE MATCH (content) AGAINST ('" + s + "')");
 			}
 		}
-		String[] sql = (String[])sqls.toArray(new String[sqls.size()]);
-		if (sql.length > 0) {
-			jdbcTemplate.batchUpdate(sql);
+	}
+
+	@Override
+	public void analyseNegativeLevel() {
+		// 好评度
+		List<String> nList = negativeDao.read();
+		if (null != nList) {
+			// 初始化 negative_level
+			jdbcTemplate.update("UPDATE tm_comments SET negative_level = 0");
+			
+			for (String s : nList) {
+				jdbcTemplate.update("UPDATE tm_comments "
+						+ "SET negative_level = negative_level + 1 WHERE MATCH (content) AGAINST ('?')", s);
+			}
 		}
-		
 	}
 
 	@Override
@@ -158,7 +237,7 @@ public class CommentDaoImpl implements CommentDao {
 		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=1 ORDER BY PERSON LIMIT ?, ?";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
 		List<Comment> list = jdbcTemplate.query(sql, rowMapper, page - 1, pageSize);
-		return null;
+		return list;
 	}
 
 	@Override
