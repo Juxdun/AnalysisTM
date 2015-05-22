@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<title>后台管理</title>
+<title>智能电子商务数据分析网--后台数据处理</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="views/manage/update.js"></script>
@@ -53,7 +53,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <p class="navbar-text">智能电子商务数据分析网--后台数据处理管理</p>
+      <p class="navbar-text">智能电子商务数据分析网--后台数据处理</p>
       <ul class="nav navbar-nav">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">导入 <span class="caret"></span></a>
@@ -91,16 +91,16 @@
             <li><a href="insertAndLink">一键搞定导入</a></li>
             <li><a href="analyseAndCount">一键搞定分析</a></li>
             <li class="divider"></li>
-            <li><a href="analysis">一键搞定导入和分析</a></li>
+            <li><a href="insertAndAnalyse">一键搞定导入和分析</a></li>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">后期加工 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a id="getWaCount" href="#">手动标记水军</a></li>
+<!--             <li><a id="getWaCount" href="#">手动标记水军</a></li>
             <li><a id="getWaCount" href="getWaCount">查看水军数量</a></li>
             <li><a id="getWaComments" href="getWaComments">查看水军评论</a></li>
-            <li class="divider"></li>
+            <li class="divider"></li> -->
             <li><a id="gotoPageCI" href="#change-info">修改商品信息</a></li>
           </ul>
         </li>
@@ -121,9 +121,9 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist" id="myTab">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">主页</a></li>
-    <li role="presentation"><a href="#sign-wa" aria-controls="sign-wa" role="tab" data-toggle="tab">手动标记水军</a></li>
+<!--     <li role="presentation"><a href="#sign-wa" aria-controls="sign-wa" role="tab" data-toggle="tab">手动标记水军</a></li> -->
     <li role="presentation"><a href="#change-info" aria-controls="change-info" role="tab" data-toggle="tab">修改商品信息</a></li>
-    <li role="presentation"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">统计信息</a></li>
+<!--     <li role="presentation"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">统计信息</a></li> -->
   </ul>
 
   <!-- Tab panes -->
@@ -148,12 +148,12 @@
         <li><h4>5)、统计水军数 <small>  （ps：先标记水军）</small></h4></li>
         <li><h4>6)、统计好评数 <small>  （ps：先分析好评度）</small></h4></li>
         <li><h4>7)、统计差评数 <small>  （ps：统计差评数）</small></h4></li>
-        <li><h4>8)、统计star （推荐值）<small>  （ps：统计差评数）</small></h4></li>
+        <li><h4>8)、统计推荐值 Star <small>  （ps：先分析好评差评）</small></h4></li>
       </ul>
     </ul>
   
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="sign-wa">
+<!--   <div role="tabpanel" class="tab-pane fade" id="sign-wa">
   
 	<div class="list-group">
 	  <a class="list-group-item" href="analysis">
@@ -170,7 +170,7 @@
 	  </a>
 	</div>
 	
-  </div>
+  </div> -->
   <div role="tabpanel" class="tab-pane fade" id="change-info">
     <form class="navbar-form" role="search" action="search">
       <div class="form-group">
@@ -189,7 +189,7 @@
     <div id="product-list" class=" list-group">
     </div>
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="info">info</div>
+<!--   <div role="tabpanel" class="tab-pane fade" id="info">info</div> -->
 </div>
 
 </div>

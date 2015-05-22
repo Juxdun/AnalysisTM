@@ -109,21 +109,34 @@
 <div role="tabpanel">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab">推荐评论 <span class="badge">42</span></a></li>
-    <li role="presentation"><a href="#a" aria-controls="profile" role="tab" data-toggle="tab">屏幕  <span class="badge">2</span></a></li>
-    <li role="presentation"><a href="#b" aria-controls="messages" role="tab" data-toggle="tab">像素 <span class="badge">12</span></a></li>
-    <li role="presentation"><a href="#c" aria-controls="settings" role="tab" data-toggle="tab">内存 <span class="badge">2</span></a></li>
+    <li role="presentation" class="active"><a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab">推荐评论 <span id="recommend-count" class="badge">42</span></a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">屏幕  </a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">像素 </a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">内存 </a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="recommend">recommend</div>
-    <div role="tabpanel" class="tab-pane" id="a">...</div>
-    <div role="tabpanel" class="tab-pane" id="b">...</div>
-    <div role="tabpanel" class="tab-pane" id="c">...</div>
+    <div role="tabpanel" class="tab-pane active" id="recommend">
+      <ul class="pager">
+        <li><a id="preComm" href="preComm">上一页</a></li>
+        <li><a id="nextComm" href="nextComm">下一页</a></li>
+      </ul>
+      <p id="cPage-label"></p>
+<ul id="cList" class="list-group">
+  <li class="list-group-item">
+    <span class="badge">14</span>
+    Cras justo odio
+  </li>
+</ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">...</div>
+    <div role="tabpanel" class="tab-pane" id="messages">...</div>
+    <div role="tabpanel" class="tab-pane" id="settings">...</div>
   </div>
 
 </div>
+
       </div>
     </div>
   </div>

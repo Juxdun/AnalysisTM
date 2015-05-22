@@ -40,6 +40,12 @@ $(function() {
 	//5. 商品下一页
 	$("#next").click(pNextEvent);
 	
+	//4. 评论上一页
+	$("#preComm").click(cPreEvent);
+	
+	//5. 评论下一页
+	$("#nextComm").click(cNextEvent);
+	
 });
 
 /*---------------------------------定义方法--------------------------------------*/
@@ -48,6 +54,7 @@ function detailEvent() {
 
 	$("#detailmodal").modal();
 	
+	// 数据显示
 	nowProId = $(this).attr("id");
 	var pro = data[nowProId];
 	
@@ -98,6 +105,10 @@ function detailEvent() {
             ]
         }]
     });
+	
+	// 加载评论
+	var args = { "id": pro.id };
+	$.getJSON("getStarComments",args , loadCItem);
 	
 	return false;
 }
@@ -153,12 +164,15 @@ function getCommentEvent() {
 	return false;
 }
 
-function loadCItem(cList, data){
+function loadCItem(data){
+	$("#recommend-count").text(data.length);
+	
 	cData = data;
 	cNowPage = 0;
 	cPageCount = Math.ceil(data.length / 10);
 	
 	// 清空列表
+	var cList = $("#cList");
 	cList.empty();
 	
 	cPager(data, cNowPage, cList);
@@ -169,26 +183,32 @@ function cPager(data, nowPage, cList){
 	// JSON变为列表显示
 	for (var i = nowPage * 10; i < data.length && i < (nowPage * 10 + 10); i++) {
 		cList.append(
-				'<li><p>' + (i + 1) + '、' + data[i].content + '</p></li>');
+				'<li class="list-group-item"><span class="badge">14</span><p>' + (i + 1) + '、' + data[i].content + '</p></li>');
 	}
+	$("#cPage-label").text("第" + (cNowPage + 1) + "/" + cPageCount + "页");
 }
 
-function cPreEvent(cList){
+function cPreEvent(){
 	if (cNowPage > 0) {
 		// 清空列表
+		var cList = $("#cList");
 		cList.empty();
 		cNowPage --;
 		cPager(cData, cNowPage, cList);
 	}
+	return false;
 }
 
-function cNextEvent(cList){
+function cNextEvent(){
 	if (cNowPage < cPageCount - 1) {
 		// 清空列表
+		var cList = $("#cList");
 		cList.empty();
 		cNowPage ++;
 		cPager(cData, cNowPage, cList);
+		
 	}
+	return false;
 }
 
 

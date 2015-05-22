@@ -63,6 +63,8 @@ $(function() {
 	
 	$("a[href='analyseAndCount']").click(analyseAndCouEvent);
 	
+	$("a[href='insertAndAnalyse']").click(insertAndAnalyseEvent);
+	
 	//5. 商品上一页
 	$("#pre").click(pPreEvent);
 	
@@ -73,6 +75,28 @@ $(function() {
 });
 
 /*---------------------------------定义方法--------------------------------------*/
+
+function insertAndAnalyseEvent() {
+	
+	$("#sureModal").modal();
+	$("#sureTitle").text("确定一键搞定导入和分析？");
+	$("#sureContent").text("1、综合需要超级长时间，大于12小时！2、把分析功能全部做完并把分析功能全部做完。3、没事不要乱搞！");
+	
+	var url = this.href;
+	
+	$("#sureBtn").unbind("click").one("click", function(){
+		var start = new Date();
+		
+		$.post(url, function (msg) {
+			var end = new Date();
+			alert(msg ? "成功" + (start-end) / 1000 + "s" :
+				"失败" + (start-end) / 1000 + "s");
+		});
+		alert("开始。完成后弹出提示框提示你！" + start);
+	});
+	
+	return false;
+}
 
 function analyseAndCouEvent() {
 	

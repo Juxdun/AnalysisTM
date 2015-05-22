@@ -50,10 +50,10 @@ public class HomeController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/getcomments")
-	public List<Comment> getComment(
-			@RequestParam("clueid") Integer clueid) {
-		return service.listCommentByProductId(clueid);
+	@RequestMapping("getStarComments")
+	public List<Comment> getStarComments(
+			@RequestParam("id") Integer id) {
+		return service.listCommentByProductId(id);
 	}
 	
 	@ResponseBody

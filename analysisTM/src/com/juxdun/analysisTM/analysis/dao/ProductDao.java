@@ -72,5 +72,7 @@ public interface ProductDao {
 	Boolean countGood();
 
 	Boolean countBad();
+
+	Boolean countStar();
 	
 }

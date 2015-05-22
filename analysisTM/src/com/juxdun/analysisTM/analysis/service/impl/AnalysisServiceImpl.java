@@ -66,7 +66,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public Detail getDetailById(String cludid) {
+	public Detail getDetailById(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -199,12 +199,33 @@ public class AnalysisServiceImpl implements AnalysisService {
 		this.countWater();
 		this.countGood();
 		this.countBad();
+		this.countStar();
 		return true;
 	}
 
 	@Override
 	public Boolean countComment() {
 		return productDao.countComment();
+	}
+
+	@Override
+	public Boolean countStar() {
+		return productDao.countStar();
+	}
+
+	@Override
+	public Boolean insertAndAnalyse() {
+		this.insertBrands();
+		this.insertProducts();
+		this.insertComments();
+		this.linkB2P();
+		this.linkP2C();
+		this.countComment();
+		this.countWater();
+		this.countGood();
+		this.countBad();
+		this.countStar();
+		return true;
 	}
 
 }

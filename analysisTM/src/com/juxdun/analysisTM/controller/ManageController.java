@@ -1,13 +1,10 @@
 package com.juxdun.analysisTM.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -138,9 +135,21 @@ public class ManageController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "countStar", method=RequestMethod.POST)
+	public Boolean countStar() {
+		return service.countStar();
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "analyseAndCount", method=RequestMethod.POST)
 	public Boolean analyseAndCount() {
 		return service.analyseAndCount();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "insertAndAnalyse", method=RequestMethod.POST)
+	public Boolean insertAndAnalyse() {
+		return service.insertAndAnalyse();
 	}
 	
 	

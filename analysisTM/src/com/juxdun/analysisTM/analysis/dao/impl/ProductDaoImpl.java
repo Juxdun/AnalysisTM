@@ -116,6 +116,20 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
+	public Boolean countStar() {
+		String sql = "UPDATE tm_products AS p "
+				+ "INNER JOIN ( "
+				+ "SELECT product_id, SUM( positive_level - negative_level) AS cou "
+				+ "FROM tm_comments "
+				+ "WHERE is_waterarmy = 0 "
+				+ "GROUP BY product_id "
+				+ ") AS c ON p.id = c.product_id "
+				+ "SET p.star = c.cou;";
+		int i = jdbcTemplate.update(sql);
+		return i<0 ? false : true;
+	}
+
+	@Override
 		public void updateProductTable() {
 			List<Product> list = this.getAllProducts();
 			// 连接tm_comments表的clueId
@@ -147,7 +161,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> getProductsByBrandId(Integer brandId) {
-		String sql = "SELECT * FROM tm_products WHERE brand_id = ? ORDER BY star, comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE brand_id = ? ORDER BY star DESC, comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, brandId);
 		
@@ -156,7 +170,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> getAllProducts() {
-		String sql = "SELECT * FROM tm_products WHERE brand_id IS NOT NULL ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE brand_id IS NOT NULL ORDER BY star DESC, comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper);
 		
@@ -168,7 +182,7 @@ public class ProductDaoImpl implements ProductDao{
 		if (page - 1 < 0) {
 			return null;
 		}
-		String sql = "SELECT * FROM tm_products LIMIT ?, ? ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products LIMIT ?, ? ORDER BY star DESC, comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, page - 1, pageSize);
 		
@@ -177,7 +191,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<Product> searchProduct(String wd) {
-		String sql = "SELECT * FROM tm_products WHERE NAME LIKE ? AND brand_id IS NOT NULL ORDER BY comment_count DESC";
+		String sql = "SELECT * FROM tm_products WHERE NAME LIKE ? AND brand_id IS NOT NULL ORDER BY star DESC, comment_count DESC";
 		RowMapper<Product> rowMapper = new BeanPropertyRowMapper<>(Product.class);
 		List<Product> list = jdbcTemplate.query(sql, rowMapper, "%"+wd+"%");
 		
