@@ -98,7 +98,7 @@ public class XSteamUtil {
 	}
 
 	/**
-	 * 直接把数据读到数据库
+	 * 直接把商品数据读到数据库
 	 * @param onDb 每读一个文件执行一次这方法
 	 */
 	public void prooductsToDb(OnInsertDB onDb){
@@ -193,7 +193,7 @@ public class XSteamUtil {
 	}*/
 	
 	/**
-	 * 直接把数据读到数据库
+	 * 直接把描述数据读到数据库
 	 * @param onDb 每读一个文件执行一次这方法
 	 */
 	public void detailsToDb(OnInsertDB onDb){
@@ -218,7 +218,7 @@ public class XSteamUtil {
 	}
 	
 	/**
-	 * 直接把数据读到数据库
+	 * 直接把评论数据读到数据库
 	 * @param onDb 每读一个文件执行一次这方法
 	 */
 	public void commentsToDb(OnInsertDB onDb){
@@ -382,6 +382,7 @@ public class XSteamUtil {
 		}
 	}
 
+	// 一边拿数据一边写入数据库接口
 	public interface OnInsertDB{
 		void onInsert(List<?> list);
 	}

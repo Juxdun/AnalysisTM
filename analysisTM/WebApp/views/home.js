@@ -50,11 +50,12 @@ $(function() {
 
 /*---------------------------------定义方法--------------------------------------*/
 
+// 推荐评论模块，详情展示
 function detailEvent() {
-
+	// 弹出模态框
 	$("#detailmodal").modal();
 	
-	// 数据显示
+	// 填充数据显示
 	nowProId = $(this).attr("id");
 	var pro = data[nowProId];
 	
@@ -110,6 +111,17 @@ function detailEvent() {
 	var args = { "id": pro.id };
 	$.getJSON("getStarComments",args , loadCItem);
 	
+	// 加载关于"屏幕"的评论
+	var args = { "id": pro.id , "kw": "屏幕"};
+	$.getJSON("getKeywordComments",args , function (data) {
+		$("#aboutScreen-count").text(data.length);
+		
+		var cList = $("#aboutScreen-cList");
+		cList.empty();
+		// 组装100条评论
+		cPager(data, 0, 100, cList);
+	});
+	
 	return false;
 }
 
@@ -123,7 +135,7 @@ function brandEvent() {
 	return false;
 }
 
-// “搜索”事件
+// js，“搜索”事件
 function searchEvent() {
 	var wd = $("[name='wd']").val();
 	wd = $.trim(wd);
@@ -137,6 +149,7 @@ function searchEvent() {
 	var args = {
 		"wd" : wd
 	};
+	// 发送事件，在loadPItem方法组装页面
 	$.getJSON(url, args, loadPItem);
 	return false;
 }
@@ -164,6 +177,7 @@ function getCommentEvent() {
 	return false;
 }
 
+// 加载评论item
 function loadCItem(data){
 	$("#recommend-count").text(data.length);
 	
@@ -174,16 +188,17 @@ function loadCItem(data){
 	// 清空列表
 	var cList = $("#cList");
 	cList.empty();
-	
-	cPager(data, cNowPage, cList);
+	// 分页组装
+	cPager(data, cNowPage, 10, cList);
 };
 
-function cPager(data, nowPage, cList){
+// 分页组装
+function cPager(data, nowPage, pageSize , cList){
 	
 	// JSON变为列表显示
-	for (var i = nowPage * 10; i < data.length && i < (nowPage * 10 + 10); i++) {
+	for (var i = nowPage * pageSize; i < data.length && i < (nowPage * pageSize + pageSize); i++) {
 		cList.append(
-				'<li class="list-group-item"><span class="badge">14</span><p>' + (i + 1) + '、' + data[i].content + '</p></li>');
+				'<li class="list-group-item"><span class="badge">' + data[i].level + '</span><p>' + (i + 1) + '、' + data[i].content + '</p></li>');
 	}
 	$("#cPage-label").text("第" + (cNowPage + 1) + "/" + cPageCount + "页");
 }
@@ -194,7 +209,7 @@ function cPreEvent(){
 		var cList = $("#cList");
 		cList.empty();
 		cNowPage --;
-		cPager(cData, cNowPage, cList);
+		cPager(cData, cNowPage, 10, cList);
 	}
 	return false;
 }
@@ -205,7 +220,7 @@ function cNextEvent(){
 		var cList = $("#cList");
 		cList.empty();
 		cNowPage ++;
-		cPager(cData, cNowPage, cList);
+		cPager(cData, cNowPage, 10, cList);
 		
 	}
 	return false;
@@ -245,7 +260,7 @@ function pNextEvent() {
 	return false;
 }
 
-// 商品翻页实现
+// 商品分页组装实现
 function pPager(data, nowPage) {
 	// JSON变为列表显示
 	for (var i = nowPage * 20; i < data.length && i < (nowPage * 20 + 20); i++) {
@@ -267,7 +282,12 @@ function pPager(data, nowPage) {
 			'</div>'+
 			'</a>');
 
-		/*var item = $('<li class="product">'+
+		$("#product-list").append(item);
+		
+	}
+	$(".pro-item").click(detailEvent);
+}
+/*var item = $('<li class="product">'+
 			'<div class="productItem clearfix">'+
 				'<a class="productImg" href="' + data[i].page + '">'+
 					'<img src="' + data[i].img + '" alt="">'+
@@ -301,9 +321,9 @@ function pPager(data, nowPage) {
 	            '</div>'+
 	        '</div>'+
 		'</li>');*/
-			
-			
-			
+
+
+
 //			$('<li class="product-item">' + '<a href="' + data[i].page
 //				+ '">' + '<img class="product-img img-rounded" src="'
 //				+ data[i].img + '">' + '<div style="margin-left: 200px;">'
@@ -313,13 +333,9 @@ function pPager(data, nowPage) {
 //				+ (data[i].commentCount - data[i].waterCount) + '/'
 //				+ (data[i].commentCount - 0) + ')</a>'
 //				+ '<ul class="comment-list"></ul>' + '</a>' + '</li>');
-		/*if (data[i].commentCount != null) {
+/*if (data[i].commentCount != null) {
 			item.css("background-color", "rgb(145, 218, 173)");
 		}*/
-		$("#product-list").append(item);
-		
-	}
-	$(".pro-item").click(detailEvent);
 /*
 	// 添加事件
 	$(".cTab a").toggle(getCommentEvent, function(){
@@ -330,15 +346,15 @@ function pPager(data, nowPage) {
 			commentList.slideUp();
 		}
 	});*/
-}
 
 // 用JSON组装product-item
 function loadPItem(json) {
 	data = json;
+	// 分页计数
 	pNowPage = 0;
 	pPageCount = Math.ceil(data.length / 20);
+	// 分页组装
 	pPager(data, pNowPage);
 
 	$("#page-tag").text("第" + (pNowPage + 1) + "/" + pPageCount + "页        总商品数：" + data.length);
-
 }

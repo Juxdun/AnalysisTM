@@ -195,6 +195,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public Boolean analyseAndCount() {
+		this.signWater();
+		this.analysePositive();
+		this.analyseNegative();
 		this.countComment();
 		this.countWater();
 		this.countGood();

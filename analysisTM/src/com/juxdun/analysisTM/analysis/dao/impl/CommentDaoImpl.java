@@ -67,10 +67,10 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public Boolean updateProductId() {
-		String sql = "UPDATE tm_comments AS c /"
-				+ "INNER JOIN tm_products AS p /"
-				+ "ON c.base_uri = CONCAT('http:',p.page) /"
-				+ "SET c.product_id = p.id;";
+		String sql = "UPDATE tm_comments AS c "
+				+ "INNER JOIN tm_products AS p "
+				+ "ON c.base_uri = CONCAT('http:',p.page) "
+				+ "SET c.product_id = p.id";
 		int i = jdbcTemplate.update(sql);
 		return i<0 ? false : true;
 	}
@@ -89,24 +89,22 @@ public class CommentDaoImpl implements CommentDao {
 	
 	@Override
 	public Boolean analysePositive() {
-		String sql = "UPDATE tm_comments SET positive_level = 0; "
-				+ "UPDATE tm_comments AS a "
-				+ "INNER JOIN ("
+		String sql = "UPDATE tm_comments AS a " 
+				+ "INNER JOIN (" 
 				+ "SELECT c.id, COUNT(c.id) AS cou "
 				+ "FROM tm_comments AS c INNER JOIN keyword_positive AS kp "
 				+ "ON c.content LIKE CONCAT('%', kp.keyword, '%') "
 				+ "AND c.is_waterarmy = 0 GROUP BY c.id ) "
 				+ "AS b "
 				+ "ON a.id = b.id "
-				+ "SET a.positive_level = b.cou;";
+				+ "SET a.positive_level = b.cou ";
 		int i = jdbcTemplate.update(sql);
 		return i<0 ? false : true;
 	}
 
 	@Override
 	public Boolean analyseNegative() {
-		String sql = "UPDATE tm_comments SET negative_level=0;"
-				+ "UPDATE tm_comments AS a INNER JOIN ("
+		String sql = "UPDATE tm_comments AS a INNER JOIN ("
 				+ "SELECT c.id, COUNT(c.id) AS cou "
 				+ "FROM tm_comments AS c "
 				+ "INNER JOIN keyword_negative AS kp "
@@ -187,29 +185,6 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
-	public List<Comment> getCommentsByProductId(Integer productId) {
-		String sql = "SELECT * FROM `tm_comments` "
-				+ "WHERE product_id=? AND char_length(content) > 10 "
-				+ "AND IS_WATERARMY=0 "
-				+ "ORDER BY positive_level - negative_level DESC";
-		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
-		List<Comment> list = jdbcTemplate.query(sql, rowMapper, productId);
-		return list;
-	}
-
-	@Override
-	public List<Comment> getCommentsByProductIdForPage(Integer productId,
-			Integer page, Integer pageSize) {
-		if (page - 1 < 0) {
-			return null;
-		}
-		String sql = "SELECT * FROM tm_comments WHERE clueid=? AND char_length(content) > 10 AND IS_WATERARMY=0 LIMIT ?, ? ORDER BY positive_level - negative_level DESC";
-		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
-		List<Comment> list = jdbcTemplate.query(sql, rowMapper, productId, page - 1, pageSize);
-		return list;
-	}
-
-	@Override
 	public Integer getWaCount() {
 		String sql = "SELECT COUNT(*) FROM tm_comments WHERE IS_WATERARMY=1";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
@@ -241,8 +216,39 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
+	public List<Comment> getCommentsByProductId(Integer productId) {
+		String sql = "SELECT * , (positive_level-negative_level) AS level  FROM `tm_comments` "
+				+ "WHERE product_id=? AND char_length(content) > 10 "
+				+ "AND IS_WATERARMY=0 "
+				+ "ORDER BY positive_level - negative_level DESC, char_length(content) DESC";
+		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper, productId);
+		return list;
+	}
+
+	@Override
+	public List<Comment> getCommentsByProductIdForPage(Integer productId,
+			Integer page, Integer pageSize) {
+		if (page - 1 < 0) {
+			return null;
+		}
+		String sql = "SELECT * , (positive_level-negative_level) AS level "
+				+ "FROM tm_comments WHERE clueid=? "
+				+ "AND char_length(content) > 10 "
+				+ "AND IS_WATERARMY=0 LIMIT ?, ? "
+				+ "ORDER BY positive_level - negative_level DESC, char_length(content) DESC";
+		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+		List<Comment> list = jdbcTemplate.query(sql, rowMapper, productId, page - 1, pageSize);
+		return list;
+	}
+
+	@Override
 	public List<Comment> getKeywordComments(Integer clueid, String keyword) {
-		String sql = "SELECT * FROM tm_comments WHERE IS_WATERARMY=0 AND  product_id=?  AND CONTENT LIKE ? ORDER BY positive_level - negative_level DESC";
+		String sql = "SELECT *, (positive_level-negative_level) AS level "
+				+ "FROM tm_comments "
+				+ "WHERE IS_WATERARMY=0 AND  product_id=?  "
+				+ "AND CONTENT LIKE ? "
+				+ "ORDER BY positive_level - negative_level DESC, char_length(content) DESC";
 		RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
 		List<Comment> list = jdbcTemplate.query(sql, rowMapper, clueid, "%" + keyword + "%");
 		return list;

@@ -46,17 +46,17 @@
     <div class="col-md-3">
 
 <ul class="brands list-inline">
-	
-	  	<c:forEach var="brand" items="${requestScope.brands }" >
-	    	
-	    	<li class="brandItem">
-		    	<a href="getproducts?brand=${brand.id }">
-		    		<img src="${brand.img}" alt="${brand.name }"/> 
-		    	</a>
-	    	</li>
-	    	
-    	</c:forEach>
-	</ul>
+<!-- 品牌组装 -->
+  	<c:forEach var="brand" items="${requestScope.brands }" >
+    	
+    	<li class="brandItem">
+	    	<a href="getproducts?brand=${brand.id }">
+	    		<img src="${brand.img}" alt="${brand.name }"/> 
+	    	</a>
+    	</li>
+    	
+   	</c:forEach>
+</ul>
 
     </div>
     <div class="col-md-8 col-md-offset-1">
@@ -78,6 +78,7 @@
 		</ul>
 	</nav>
 	
+	<!-- 商品组装容器div -->
 	<div id="product-list" class=" list-group">
 	</div>
 
@@ -110,9 +111,11 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab">推荐评论 <span id="recommend-count" class="badge">42</span></a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">屏幕  </a></li>
+    <li role="presentation"><a href="#aboutScreen" aria-controls="aboutScreen" role="tab" data-toggle="tab">屏幕  <span id="aboutScreen-count" class="badge">42</span></a></li>
+    <!-- 
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">像素 </a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">内存 </a></li>
+     -->
   </ul>
 
   <!-- Tab panes -->
@@ -130,9 +133,18 @@
   </li>
 </ul>
     </div>
-    <div role="tabpanel" class="tab-pane" id="profile">...</div>
+    <div role="tabpanel" class="tab-pane" id="aboutScreen">
+<ul id="aboutScreen-cList" class="list-group">
+  <li class="list-group-item">
+    <span class="badge">1</span>
+    没有关于屏幕的评论
+  </li>
+</ul>
+    </div>
+    <!-- 
     <div role="tabpanel" class="tab-pane" id="messages">...</div>
     <div role="tabpanel" class="tab-pane" id="settings">...</div>
+     -->
   </div>
 
 </div>
@@ -143,7 +155,7 @@
 </div>
 	
 	
-	<a style="position: fixed; bottom: 100px; right: 100px;" href="#">顶部</a>
+	<a style="position: fixed; bottom: 20px; right: 10px;" href="#">顶部</a>
 </div>
 </body>
 </html>

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadTxt {
+	/**
+	 * 读取txt文件接口
+	 * @param file 文件
+	 * @return String的列表
+	 */
 	public static List<String> readTxtToList(File file){
 		List<String> list = null;
 		if (file.isFile() && file.exists()) {

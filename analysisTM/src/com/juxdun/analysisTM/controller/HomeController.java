@@ -59,7 +59,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping("/getKeywordComments")
 	public List<Comment> getKeywordComments(
-			@RequestParam("kw") String keyword, @RequestParam("clueid") Integer clueid) {
+			@RequestParam("kw") String keyword, @RequestParam("id") Integer clueid) {
 		String s = null;
 		try {
 			s = new String(keyword.getBytes("iso8859-1"),"UTF-8");

@@ -199,7 +199,8 @@ function linkEvent() {
 		
 		$.post(url, function (msg) {
 			var end = new Date();
-			alert(msg ? "成功" : "失败" + (start-end) / 1000 + "s");
+			alert(msg ? "成功" + (start-end) / 1000 + "s" :
+				"失败" + (start-end) / 1000 + "s");
 		});
 		alert("链接。完成后弹出提示框提示你！" + start);
 	});
@@ -220,7 +221,8 @@ function insertBrandsEvent() {
 		
 		$.post(url, function (msg) {
 			var end = new Date();
-			alert(msg ? "更新成功" : "更新失败" + (start-end) / 1000 + "s");
+			alert(msg ? "成功" + (start-end) / 1000 + "s" :
+				"失败" + (start-end) / 1000 + "s");
 		});
 		alert("开始插入数据。完成后弹出提示框提示你！" + start);
 	});
@@ -241,7 +243,8 @@ function insertProductsEvent() {
 		
 		$.post(url, function (msg) {
 			var end = new Date();
-			alert(msg ? "更新成功" : "更新失败" + (start-end) / 1000 + "s");
+			alert(msg ? "成功" + (start-end) / 1000 + "s" :
+				"失败" + (start-end) / 1000 + "s");
 		});
 		alert("开始插入数据。完成后弹出提示框提示你！" + start);
 	});
@@ -262,7 +265,8 @@ function insertCommentsEvent() {
 		
 		$.post(url, function (msg) {
 			var end = new Date();
-			alert(msg ? "更新成功" : "更新失败" + (start-end) / 1000 + "s");
+			alert(msg ? "成功" + (start-end) / 1000 + "s" :
+				"失败" + (start-end) / 1000 + "s");
 		});
 		alert("开始插入数据。完成后弹出提示框提示你！" + start);
 	});

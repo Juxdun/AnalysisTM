@@ -141,6 +141,17 @@ public class ManageController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "oneshotCount", method=RequestMethod.POST)
+	public Boolean oneshotCount() {
+		service.countComment();
+		service.countWater();
+		service.countGood();
+		service.countBad();
+		service.countStar();
+		return true;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "analyseAndCount", method=RequestMethod.POST)
 	public Boolean analyseAndCount() {
 		return service.analyseAndCount();

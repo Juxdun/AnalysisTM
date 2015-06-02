@@ -30,6 +30,18 @@ public class Comment {
 	 * 评论人
 	 */
 	private String person;
+	
+	private String level;
+
+	public String getLevel() {
+		return level;
+	}
+
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
 
 	public int getId() {
 		return id;
